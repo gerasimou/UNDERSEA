@@ -1,0 +1,5 @@
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSEssentials/Essentials/pScheduler/CMakeFiles/pScheduler.dir
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSEssentials/Essentials/pAntler/CMakeFiles/pAntler.dir
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSEssentials/Essentials/pLogger/CMakeFiles/pLogger.dir
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSEssentials/Essentials/pShare/CMakeFiles/pShare.dir
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSEssentials/Essentials/pMOOSBridge/CMakeFiles/pMOOSBridge.dir

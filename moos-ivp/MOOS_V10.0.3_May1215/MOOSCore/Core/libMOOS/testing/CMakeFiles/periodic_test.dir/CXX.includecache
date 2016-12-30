@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSCore/Core/libMOOS/testing/PeriodicEventTest.cpp
+MOOS/libMOOS/Utils/PeriodicEvent.h
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSCore/Core/libMOOS/testing/MOOS/libMOOS/Utils/PeriodicEvent.h
+MOOS/libMOOS/Utils/MOOSUtilityFunctions.h
+/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSCore/Core/libMOOS/testing/MOOS/libMOOS/Utils/MOOSUtilityFunctions.h
+iostream
+-
+iomanip
+-
+cmath
+-
+
+Core/libMOOS/Utils/include/MOOS/libMOOS/Utils/MOOSUtilityFunctions.h
+stdint.h
+-
+string
+-
+list
+-
+vector
+-
+sstream
+-
+algorithm
+-
+
+Core/libMOOS/Utils/include/MOOS/libMOOS/Utils/PeriodicEvent.h
+
