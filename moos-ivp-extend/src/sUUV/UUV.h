@@ -8,26 +8,57 @@
 #ifndef UUV_HEADER
 #define UUV_HEADER
 
-#include "MOOS/libMOOS/MOOSLib.h"
+#include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h"
+#include <map>
 
-class UUV : public CMOOSApp
+class UUV : public AppCastingMOOSApp
 {
- public:
-   UUV();
-   ~UUV();
+	 public:
+	   UUV();
+	   ~UUV();
+	   bool buildReport();
 
- protected:
-   bool OnNewMail(MOOSMSG_LIST &NewMail);
-   bool Iterate();
-   bool OnConnectToServer();
-   bool OnStartUp();
-   void RegisterVariables();
 
- private: // Configuration variables
+	 protected:
+	   bool OnNewMail(MOOSMSG_LIST &NewMail);
+	   bool Iterate();
+	   bool OnConnectToServer();
+	   bool OnStartUp();
+	   void RegisterVariables();
 
- private: // State variables
-   unsigned int m_iterations;
-   double       m_timewarp;
+	 private:
+	   bool handleSensorsNames(std::string value);
+	   void initSensorsMap();
+
+
+	 private: // Configuration variables
+	   std::string m_uuv_name; //uuv name
+	   std::vector<std::string> m_uuv_sensors;
+
+
+	 private: // State variables
+	   unsigned int m_iterations;
+	   double       m_timewarp;
+
+	   struct Sensor{
+	   	   protected:
+		   	   std::string toString()
+		   	   {
+		   		    std::string str = name +"\t\t"+ intToString(numOfReadings) +"\t\t"+ doubleToString(averageRate,2);
+		   			return str;
+		   	   }
+
+		   public:
+			   std::string name;
+			   int numOfReadings;
+			   double averageRate;
+			   int state;
+
+	   };
+	   typedef std::map<std::string, Sensor> sensorsMap;
+
+	   sensorsMap m_sensors_map;
+
 };
 
 #endif 
