@@ -13,25 +13,35 @@ using namespace std;
 
 //---------------------------------------------------------
 // Constructor
-
+//---------------------------------------------------------
 Odometry::Odometry()
 {
-  m_iterations = 0;
-  m_timewarp   = 1;
+  m_iterations 		= 0;
+  m_timewarp   		= 1;
+  m_first_reading 	= true;
+  m_current_x 		= 0;
+  m_current_y 		= 0;
+  m_previous_x 		= 0;
+  m_previous_y 		= 0;
+  m_total_distance 	= 0;
 }
+
 
 //---------------------------------------------------------
 // Destructor
-
+//---------------------------------------------------------
 Odometry::~Odometry()
 {
 }
 
+
 //---------------------------------------------------------
 // Procedure: OnNewMail
-
+//---------------------------------------------------------
 bool Odometry::OnNewMail(MOOSMSG_LIST &NewMail)
 {
+  AppCastingMOOSApp::OnNewMail(NewMail);        // Add this line
+
   MOOSMSG_LIST::iterator p;
    
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
@@ -47,14 +57,25 @@ bool Odometry::OnNewMail(MOOSMSG_LIST &NewMail)
     bool   mdbl  = msg.IsDouble();
     bool   mstr  = msg.IsString();
 #endif
-   }
-	
+
+    string key   = msg.GetKey();
+    if (key == "NAV_X"){
+    	m_previous_x = m_current_x;
+    	m_current_x  = msg.GetDouble();
+    }
+    else if (key == "NAV_Y"){
+    	m_previous_y = m_current_y;
+		m_current_y  = msg.GetDouble();
+	}
+  }
+
    return(true);
 }
 
+
 //---------------------------------------------------------
 // Procedure: OnConnectToServer
-
+//---------------------------------------------------------
 bool Odometry::OnConnectToServer()
 {
    // register for variables here
@@ -66,22 +87,46 @@ bool Odometry::OnConnectToServer()
    return(true);
 }
 
+
 //---------------------------------------------------------
 // Procedure: Iterate()
 //            happens AppTick times per second
-
+//---------------------------------------------------------
 bool Odometry::Iterate()
 {
+  AppCastingMOOSApp::Iterate();
+
   m_iterations++;
+
+  double distance = -1;
+
+  if (m_first_reading){
+	  m_first_reading = false;
+	  distance =  sqrt(pow(m_current_x,2.0) + pow(m_current_y,2.0));
+  }
+  else{
+	  distance =  sqrt(pow(m_current_x-m_previous_x,2.0) + pow(m_current_y-m_previous_y,2.0));
+  }
+
+  m_total_distance += distance;
+
+  Notify("ODOMETRY_DIST", m_total_distance);
+  Notify("ODOMETRY_X", m_current_x);
+  Notify("ODOMETRY_Y", m_current_y);
+
+  AppCastingMOOSApp:PostReport();
   return(true);
 }
+
 
 //---------------------------------------------------------
 // Procedure: OnStartUp()
 //            happens before connection is open
-
+//---------------------------------------------------------
 bool Odometry::OnStartUp()
 {
+  AppCastingMOOSApp::OnStartUp();               // Add this line
+
   list<string> sParams;
   m_MissionReader.EnableVerbatimQuoting(false);
   if(m_MissionReader.GetConfiguration(GetAppName(), sParams)) {
@@ -106,11 +151,26 @@ bool Odometry::OnStartUp()
   return(true);
 }
 
+
 //---------------------------------------------------------
 // Procedure: RegisterVariables
-
+//---------------------------------------------------------
 void Odometry::RegisterVariables()
 {
-  // Register("FOOBAR", 0);
+  AppCastingMOOSApp::RegisterVariables();      // Add this line
+
+  Register("NAV_X", 0);
+  Register("NAV_Y", 0);
 }
 
+
+//---------------------------------------------------------
+// Procedure: RegisterVariables
+//---------------------------------------------------------
+bool Odometry::buildReport()
+{
+	m_msgs << "Distance traveled: " << m_total_distance << endl;
+	m_msgs << "Current coordinates (x,y): (" << m_current_x <<","<< m_current_y <<")"  << endl;
+
+	return true;
+}
