@@ -9,10 +9,17 @@
 #ifndef SRC_SSENSOR_DEGRADATION_H_
 #define SRC_SSENSOR_DEGRADATION_H_
 
+#include <string>
+
 class Degradation {
 	public:
-		Degradation();
+		Degradation(double start, double finish, double degradation);
 		virtual ~Degradation();
+
+		std::string toString();
+		double getStartTime();
+		double getFinishTime();
+		double getDegradation();
 
 	private:
 		double m_start; 		//failure starting time
