@@ -1,9 +1,9 @@
-/****************************************************************/
-/*   NAME: Simos Gerasimou                                             */
-/*   ORGN: MIT Cambridge MA                                     */
-/*   FILE: Sensor_Info.cpp                               */
-/*   DATE: Dec 29th 1963                                        */
-/****************************************************************/
+/************************************************************/
+/*    NAME: Simos Gerasimou                                 */
+/*    ORGN: University of York, UK                          */
+/*   FILE: Sensor_Info.cpp                                  */
+/*    DATE: 2016                                            */
+/************************************************************/
 
 #include <cstdlib>
 #include <iostream>

@@ -1,9 +1,10 @@
 /************************************************************/
-/*    NAME: Simos Gerasimou                                              */
-/*    ORGN: MIT                                             */
-/*    FILE: Sensor.cpp                                        */
-/*    DATE:                                                 */
+/*    NAME: Simos Gerasimou                                 */
+/*    ORGN: University of York, UK                          */
+/*   FILE: Sensor.cpp                                       */
+/*    DATE: 2016                                            */
 /************************************************************/
+
 
 #include <iterator>
 #include "MBUtils.h"

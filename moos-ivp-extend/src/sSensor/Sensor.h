@@ -1,8 +1,8 @@
 /************************************************************/
-/*    NAME: Simos Gerasimou                                              */
-/*    ORGN: MIT                                             */
-/*    FILE: Sensor.h                                          */
-/*    DATE:                                                 */
+/*    NAME: Simos Gerasimou                                 */
+/*    ORGN: University of York, UK                          */
+/*   FILE: Sensor.h                                         */
+/*    DATE: 2016                                            */
 /************************************************************/
 
 #ifndef Sensor_HEADER

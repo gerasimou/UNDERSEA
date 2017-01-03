@@ -1,9 +1,9 @@
-/****************************************************************/
-/*   NAME: Simos Gerasimou                                             */
-/*   ORGN: MIT Cambridge MA                                     */
-/*   FILE: Sensor_Info.h                                      */
-/*   DATE: Dec 29th 1963                                        */
-/****************************************************************/
+/************************************************************/
+/*    NAME: Simos Gerasimou                                 */
+/*    ORGN: University of York, UK                          */
+/*   FILE: Sensor_Info.h                                    */
+/*    DATE: 2016                                            */
+/************************************************************/
 
 #ifndef Sensor_INFO_HEADER
 #define Sensor_INFO_HEADER
