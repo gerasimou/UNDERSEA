@@ -8,26 +8,38 @@
 #ifndef Sensor_HEADER
 #define Sensor_HEADER
 
-#include "MOOS/libMOOS/MOOSLib.h"
+#include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h"
 
-class Sensor : public CMOOSApp
+#include "Degradation.h"
+
+class Sensor : public AppCastingMOOSApp
 {
- public:
-   Sensor();
-   ~Sensor();
+	 public:
+	   Sensor();
+	   ~Sensor();
+	   bool buildReport();
 
- protected:
-   bool OnNewMail(MOOSMSG_LIST &NewMail);
-   bool Iterate();
-   bool OnConnectToServer();
-   bool OnStartUp();
-   void RegisterVariables();
+	 protected:
+	   bool OnNewMail(MOOSMSG_LIST &NewMail);
+	   bool Iterate();
+	   bool OnConnectToServer();
+	   bool OnStartUp();
+	   void RegisterVariables();
 
- private: // Configuration variables
+	 private:
+	   bool handleDegradation(std::string value);
 
- private: // State variables
-   unsigned int m_iterations;
-   double       m_timewarp;
+
+
+	 private: // Configuration variables
+	   double m_nominal_rate; //parameter defined in moos file
+	   std::string m_sensor_name; //sensor name
+	   std::vector<Degradation> m_degradations;
+
+
+	 private: // State variables
+	   unsigned int m_iterations;
+	   double       m_timewarp;
 };
 
 #endif 

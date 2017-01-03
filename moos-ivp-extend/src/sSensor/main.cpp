@@ -1,8 +1,8 @@
 /************************************************************/
-/*    NAME: Simos Gerasimou                                              */
-/*    ORGN: MIT                                             */
+/*    NAME: Simos Gerasimou                                 */
+/*    ORGN: University of York, UK                          */
 /*    FILE: main.cpp                                        */
-/*    DATE:                                                 */
+/*    DATE: 2016                                            */
 /************************************************************/
 
 #include <string>
