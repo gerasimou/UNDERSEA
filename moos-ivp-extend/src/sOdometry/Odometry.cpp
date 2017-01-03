@@ -165,7 +165,7 @@ void Odometry::RegisterVariables()
 
 
 //---------------------------------------------------------
-// Procedure: RegisterVariables
+// Procedure: buildReport
 //---------------------------------------------------------
 bool Odometry::buildReport()
 {
