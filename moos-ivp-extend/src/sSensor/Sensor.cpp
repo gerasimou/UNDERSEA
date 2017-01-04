@@ -1,7 +1,7 @@
 /************************************************************/
 /*    NAME: Simos Gerasimou                                 */
 /*    ORGN: University of York, UK                          */
-/*   FILE: Sensor.cpp                                       */
+/*    FILE: Sensor.cpp                                      */
 /*    DATE: 2016                                            */
 /************************************************************/
 
@@ -164,6 +164,7 @@ bool Sensor::Iterate()
 	else
 		Notify(m_sensor_name, doubleToString(currentTime,3) + "\t OK");
 
+	reportEvent(doubleToString(currentTime,3) + "\t READING");
 
 	AppCastingMOOSApp::PostReport();
 	return(true);

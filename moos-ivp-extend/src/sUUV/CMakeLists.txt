@@ -9,6 +9,7 @@ SET(SRC
   UUV.cpp
   UUV_Info.cpp
   main.cpp
+  Utilities.cpp
 )
 
 

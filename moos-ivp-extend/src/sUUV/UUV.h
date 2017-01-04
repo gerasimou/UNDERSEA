@@ -40,12 +40,29 @@ class UUV : public AppCastingMOOSApp
 	   unsigned int m_iterations;
 	   double       m_timewarp;
 
+	   double m_current_iterate;
+	   double m_previous_iterate;
+
 	   struct Sensor{
-	   	   protected:
+	   	   public:
 		   	   std::string toString()
 		   	   {
 		   		    std::string str = name +"\t\t"+ intToString(numOfReadings) +"\t\t"+ doubleToString(averageRate,2);
 		   			return str;
+		   	   }
+
+		   	   void newReading()
+		   	   {
+		   		   numOfReadings += 1;
+		   		   averageRate	  = numOfReadings / (MOOSTime(true) - time);
+		   	   }
+
+		   	   void reset()
+		   	   {
+		   		   numOfReadings	= 0;
+				   averageRate  	= 0;
+				   state			= -1;
+				   time				= MOOSTime(true);
 		   	   }
 
 		   public:
@@ -53,6 +70,7 @@ class UUV : public AppCastingMOOSApp
 			   int numOfReadings;
 			   double averageRate;
 			   int state;
+			   double time;
 
 	   };
 	   typedef std::map<std::string, Sensor> sensorsMap;

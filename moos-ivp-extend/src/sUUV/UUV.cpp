@@ -8,6 +8,7 @@
 #include <iterator>
 #include "MBUtils.h"
 #include "UUV.h"
+#include "Utilities.h"
 
 using namespace std;
 
@@ -16,8 +17,10 @@ using namespace std;
 //---------------------------------------------------------
 UUV::UUV()
 {
-	m_iterations = 0;
-	m_timewarp   = 1;
+	m_iterations 			= 0;
+	m_timewarp   			= 1;
+	m_current_iterate		= GetAppStartTime();
+	m_previous_iterate 		= 0;
 }
 
 
@@ -61,6 +64,9 @@ bool UUV::OnStartUp()
 	}
 
 	m_timewarp = GetMOOSTimeWarp();
+
+	//init sensors map
+	initSensorsMap();
 
 	RegisterVariables();
 	return(true);
@@ -119,10 +125,9 @@ bool UUV::OnNewMail(MOOSMSG_LIST &NewMail)
 		#endif
 
 		string key   = msg.GetKey();
-//		if (find(m_uuv_sensors.begin(), m_uuv_sensors.end(), key) != m_uuv_sensors.end()){
-//
-//		}
-
+		if (find(m_uuv_sensors.begin(), m_uuv_sensors.end(), key) != m_uuv_sensors.end()){
+			m_sensors_map[key].newReading();
+		}
 	}
 
 	return(true);
@@ -139,6 +144,21 @@ bool UUV::Iterate()
 
 	//do app stuff here
 	m_iterations++;
+
+	m_current_iterate = MOOSTime(true);
+	if (m_current_iterate - m_previous_iterate >= 10){
+
+		string outputString = doubleToString(m_current_iterate - GetAppStartTime(), 2) +",";
+
+		//reset sensors
+		for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
+			outputString += doubleToString(it->second.averageRate,2) +",";
+			it->second.reset();
+		}
+
+		Utilities::writeToFile("log.csv", outputString);
+		m_previous_iterate = m_current_iterate;
+	}
 
 	AppCastingMOOSApp::PostReport();               // Add this line
 	return(true);
@@ -160,10 +180,11 @@ bool UUV::buildReport()
 	for (unsigned i=0; i<m_uuv_sensors.size(); i++){
 		m_msgs << m_uuv_sensors.at(i) << endl;
 	}
-//	m_msgs << endl << endl;
-//	for (unsigned i=0; i<m_uuv_sensors.size(); i++){
-//		m_msgs << m_uuv_sensors.at(i) << endl;
-//	}
+
+	m_msgs << endl << endl;
+	for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
+		m_msgs << it->second.toString() << endl;
+	}
 
 	return true;
 }
@@ -202,6 +223,7 @@ void UUV::initSensorsMap()
 		newSensor.averageRate 	= 0;
 		newSensor.numOfReadings = 0;
 		newSensor.state			= -1;
+		newSensor.time			= MOOSTime(true);
 		m_sensors_map[*it] = newSensor;
 	}
 }

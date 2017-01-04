@@ -19,6 +19,7 @@ ADD_SUBDIRECTORY(pXRelayTest)
 ADD_SUBDIRECTORY(pExampleApp)
 ADD_SUBDIRECTORY(sOdometry)
 ADD_SUBDIRECTORY(sSensor)
+ADD_SUBDIRECTORY(sUUV)
 
 ##############################################################################
 #                           END of CMakeLists.txt
