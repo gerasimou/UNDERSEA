@@ -19,8 +19,9 @@ UUV::UUV()
 {
 	m_iterations 			= 0;
 	m_timewarp   			= 1;
-	m_current_iterate		= GetAppStartTime();
-	m_previous_iterate 		= 0;
+	m_app_start_time		= GetAppStartTime();
+	m_current_iterate		= m_app_start_time;
+	m_previous_iterate 		= m_app_start_time;
 }
 
 
@@ -148,7 +149,7 @@ bool UUV::Iterate()
 	m_current_iterate = MOOSTime(true);
 	if (m_current_iterate - m_previous_iterate >= 10){
 
-		string outputString = doubleToString(m_current_iterate - GetAppStartTime(), 2) +",";
+		string outputString = doubleToString(m_current_iterate - m_app_start_time, 2) +",";
 
 		//reset sensors
 		for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
@@ -156,7 +157,12 @@ bool UUV::Iterate()
 			it->second.reset();
 		}
 
-		Utilities::writeToFile("log.csv", outputString);
+		//show visual hints on pMarineViewer
+		sendNotifications();
+
+		//log
+		Utilities::writeToFile("log/sensorsRates.csv", outputString);
+
 		m_previous_iterate = m_current_iterate;
 	}
 
@@ -226,4 +232,52 @@ void UUV::initSensorsMap()
 		newSensor.time			= MOOSTime(true);
 		m_sensors_map[*it] = newSensor;
 	}
+}
+
+
+//---------------------------------------------------------
+// Procedure: sendNotifications
+//---------------------------------------------------------
+void UUV::sendNotifications()
+{
+	string yPosition 	= "-50";
+	int xMiddlePosition = 75;
+
+	int numOfSensors 	= m_uuv_sensors.size();
+
+	int xStartPosition 	= (m_uuv_sensors.size()/2 * (-50)) + xMiddlePosition;
+
+	int index=0;
+	for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
+		int xPosition = xStartPosition + index*50;
+		index++;
+
+		string sensorColor = "";
+		switch (it->second.state){
+			case -1: {
+				sensorColor = "red";
+						break;
+			}
+			case 0: {
+						sensorColor = "white";
+						break;
+			}
+			case 1: {
+						sensorColor = "orange";
+						break;
+			}
+			case 2: {
+						sensorColor = "green";
+						break;
+			}
+		}
+
+		Notify("VIEW_MARKER", "type=circle,x=" + intToString(xPosition) +",y=-50,scale=2,label=" + it->first +",color=" + sensorColor + ",width=12");
+	}
+
+	//set desired speed
+//	double m_desired_speed = 0;
+//	Notify("UPDATES_BHV_CONSTANT_SPEED", "speed="+doubleToString(m_desired_speed));
+
+
 }

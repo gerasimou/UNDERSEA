@@ -29,6 +29,7 @@ class UUV : public AppCastingMOOSApp
 	 private:
 	   bool handleSensorsNames(std::string value);
 	   void initSensorsMap();
+	   void sendNotifications();
 
 
 	 private: // Configuration variables
@@ -40,6 +41,7 @@ class UUV : public AppCastingMOOSApp
 	   unsigned int m_iterations;
 	   double       m_timewarp;
 
+	   double m_app_start_time;
 	   double m_current_iterate;
 	   double m_previous_iterate;
 
