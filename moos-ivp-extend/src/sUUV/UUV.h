@@ -35,6 +35,7 @@ class UUV : public AppCastingMOOSApp
 	 private: // Configuration variables
 	   std::string m_uuv_name; //uuv name
 	   std::vector<std::string> m_uuv_sensors;
+	   double M_TIME_WINDOW;
 
 
 	 private: // State variables
@@ -44,6 +45,7 @@ class UUV : public AppCastingMOOSApp
 	   double m_app_start_time;
 	   double m_current_iterate;
 	   double m_previous_iterate;
+
 
 	   struct Sensor{
 	   	   public:

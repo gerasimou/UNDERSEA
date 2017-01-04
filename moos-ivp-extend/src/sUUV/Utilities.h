@@ -11,8 +11,10 @@
 #include <iostream>
 
 class Utilities {
+
 	public:
 		static void writeToFile(std::string filename, std::string outputString);
+
 	private:
 		Utilities();
 		virtual ~Utilities();

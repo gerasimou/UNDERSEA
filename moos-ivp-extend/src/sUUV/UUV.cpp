@@ -19,9 +19,11 @@ UUV::UUV()
 {
 	m_iterations 			= 0;
 	m_timewarp   			= 1;
-	m_app_start_time		= GetAppStartTime();
+	m_app_start_time		= MOOSTime(true);
 	m_current_iterate		= m_app_start_time;
 	m_previous_iterate 		= m_app_start_time;
+
+	M_TIME_WINDOW 			= 10;
 }
 
 
@@ -55,6 +57,10 @@ bool UUV::OnStartUp()
 		  }
 		  else if (param == "SENSORS"){
 			  bool handled = handleSensorsNames(value);
+		  }
+		  else if (param == "TIME_WINDOW"){
+			  if (isNumber(value.c_str()))
+				  M_TIME_WINDOW = atoi(value.c_str());
 		  }
 		  else //throw a configuration warning
 			  reportUnhandledConfigWarning(original_line);
@@ -147,15 +153,18 @@ bool UUV::Iterate()
 	m_iterations++;
 
 	m_current_iterate = MOOSTime(true);
-	if (m_current_iterate - m_previous_iterate >= 10){
+	if (m_current_iterate - m_previous_iterate >= M_TIME_WINDOW){
 
-		string outputString = doubleToString(m_current_iterate - m_app_start_time, 2) +",";
+		string outputString = doubleToString(m_current_iterate - GetAppStartTime(), 2) +",";
 
 		//reset sensors
 		for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
 			outputString += doubleToString(it->second.averageRate,2) +",";
+			//reset sensors information
 			it->second.reset();
 		}
+
+
 
 		//show visual hints on pMarineViewer
 		sendNotifications();
