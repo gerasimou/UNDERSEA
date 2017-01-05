@@ -9,6 +9,8 @@
 #define UUV_HEADER
 
 #include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h"
+#include "MBUtils.h"
+
 #include <map>
 
 class UUV : public AppCastingMOOSApp
@@ -30,6 +32,7 @@ class UUV : public AppCastingMOOSApp
 	   bool handleSensorsNames(std::string value);
 	   void initSensorsMap();
 	   void sendNotifications();
+	   void initServer();
 
 
 	 private: // Configuration variables
@@ -46,7 +49,7 @@ class UUV : public AppCastingMOOSApp
 	   double m_current_iterate;
 	   double m_previous_iterate;
 
-
+	 public:
 	   struct Sensor{
 	   	   public:
 		   	   std::string toString()

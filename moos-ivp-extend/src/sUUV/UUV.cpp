@@ -9,6 +9,8 @@
 #include "MBUtils.h"
 #include "UUV.h"
 #include "Utilities.h"
+#include "server/serverLoop.h"
+#include <pthread.h>
 
 using namespace std;
 
@@ -90,6 +92,9 @@ bool UUV::OnConnectToServer()
    // m_MissionReader.GetConfigurationParam("Name", <string>);
    // m_Comms.Register("VARNAME", 0);
 
+   //init controller server
+	initServer();
+
    RegisterVariables();
    return(true);
 }
@@ -158,11 +163,11 @@ bool UUV::Iterate()
 		string outputString = doubleToString(m_current_iterate - GetAppStartTime(), 2) +",";
 
 		//reset sensors
-		for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
-			outputString += doubleToString(it->second.averageRate,2) +",";
+//		for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
+//			outputString += doubleToString(it->second.averageRate,2) +",";
 			//reset sensors information
-			it->second.reset();
-		}
+//			it->second.reset();
+//		}
 
 
 
@@ -170,7 +175,7 @@ bool UUV::Iterate()
 		sendNotifications();
 
 		//log
-		Utilities::writeToFile("log/sensorsRates.csv", outputString);
+//		Utilities::writeToFile("log/sensorsRates.csv", outputString);
 
 		m_previous_iterate = m_current_iterate;
 	}
@@ -243,6 +248,18 @@ void UUV::initSensorsMap()
 	}
 }
 
+
+//---------------------------------------------------------
+// Procedure: initServer
+//---------------------------------------------------------
+void UUV::initServer()
+{
+	initialiseServer(8888);
+	pthread_t thread;
+//	int n = pthread_create(&thread, NULL, runServer, NULL);
+	int n = pthread_create(&thread, NULL, runServer2,  (void *) &m_sensors_map);
+
+}
 
 //---------------------------------------------------------
 // Procedure: sendNotifications

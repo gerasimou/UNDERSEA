@@ -10,6 +10,7 @@ SET(SRC
   UUV_Info.cpp
   main.cpp
   Utilities.cpp
+  server/serverLoop.cpp
 )
 
 
