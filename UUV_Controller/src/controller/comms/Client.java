@@ -12,7 +12,9 @@ public class Client {
     private Socket socket;		
     private PrintWriter out;			
     private BufferedReader in;
-
+    
+    /** Shut down string*/
+    private String SHUT_DOWN_STR = "###";
     
     /**
      * Constructor: create a new client instance
@@ -48,9 +50,17 @@ public class Client {
 	
 	
 	public String write(String outputStr) throws IOException{
-		out.print(outputStr);
+		out.println(outputStr);
 		out.flush();
 		return read();
 	}
 
+	
+	public boolean shutDown() throws IOException{
+		String inputStr = write(SHUT_DOWN_STR);
+		System.out.println(inputStr);
+		if (inputStr.equals(SHUT_DOWN_STR))
+			return true;
+		return false;
+	}
 }

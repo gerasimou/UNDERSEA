@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.Random;
 
 import auxiliary.Utility;
@@ -12,6 +13,9 @@ public abstract class Controller {
 	
 	/** Effector handle*/
 	private Effector effector;
+	
+	/** Comms handle*/
+	private Client client;
 
 	/** Monitor handle*/
 	protected Monitor monitor;
@@ -42,9 +46,9 @@ public abstract class Controller {
 	public Controller(String hostName, int portNumber) {		
 	    try {
 	    	//init comms client
-	    	host			= hostName;
-	    	port			= portNumber;
-	    	Client client	= new Client(host, port);
+	    	host	= hostName;
+	    	port	= portNumber;
+	    	client	= new Client(host, port);
 	    	
 		    //init MAPE
 			sensor 		= new Sensor(client);		    
@@ -77,7 +81,7 @@ public abstract class Controller {
 			if (now - previousInvocation > (TIME_WINDOW * 1000)){
 				
 				sensor.run();
-				System.out.println((now - start)/1000.0 +"\t"+ sensor.getReply());
+				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tSending:\t"+ sensor.getReply());
 				
 				monitor.run();
 				
@@ -91,14 +95,34 @@ public abstract class Controller {
 				String s1 = "SENSOR1=" + (rand.nextInt(4)-1);
 				String s2 = "SENSOR2=" + (rand.nextInt(4)-1);
 				String s3 = "SENSOR3=" + (rand.nextInt(4)-1);
-				effector.setCommand(sp +","+ s1 +","+ s2 +","+ s3 +"\n");
+				effector.setCommand(sp +","+ s1 +","+ s2 +","+ s3);
 				effector.run();
-				System.out.println(effector.getReply());
+				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tReceived:\t"+ effector.getReply() +"\n");
 				
 				previousInvocation = now;
 			}
 		}
 		while (now - start <= SIMULATION_TIME);
+		shutDown();
+	}
+	
+	
+	
+	private void shutDown(){
+		boolean closed = false;
+		
+		try {
+			closed = client.shutDown();
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if (closed)
+				System.out.println("Comms terminated correctly!");
+			else
+				System.out.println("Something was wrong with terminating comms!");
+		}
 	}
 	
 }

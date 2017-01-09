@@ -10,7 +10,7 @@ public class Sensor {
     private Client client;			
 
     /** Command to send to managed system*/
-    private String command = "SENSORS\n";
+    private String command = "SENSORS";
     
     /** Reply from managed system*/
     private String reply;
