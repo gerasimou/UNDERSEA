@@ -74,8 +74,6 @@ public abstract class Controller {
 		
 		long now, start=previousInvocation;
 		
-		Random rand = new Random(System.currentTimeMillis());
-
 		do{
 			now = System.currentTimeMillis();
 			if (now - previousInvocation > (TIME_WINDOW * 1000)){
@@ -91,11 +89,7 @@ public abstract class Controller {
 				
 				executor.run();
 				
-				String sp = "SPEED="   + (rand.nextDouble()+3);
-				String s1 = "SENSOR1=" + (rand.nextInt(4)-1);
-				String s2 = "SENSOR2=" + (rand.nextInt(4)-1);
-				String s3 = "SENSOR3=" + (rand.nextInt(4)-1);
-				effector.setCommand(sp +","+ s1 +","+ s2 +","+ s3);
+				effector.setCommand(executor.getCommand());
 				effector.run();
 				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tReceived:\t"+ effector.getReply() +"\n");
 				

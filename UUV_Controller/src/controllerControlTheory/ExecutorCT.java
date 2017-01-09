@@ -11,6 +11,13 @@ public class ExecutorCT extends Executor {
 	public void run() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	
+	@Override
+	public String getCommand() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 
 }
