@@ -131,12 +131,16 @@ void *runServer2 (void *m_sensors_map)
 	 if (newsockfd < 0)
 		 error("ERROR on accept");
 
+	 UUV::sensorsMap *sensMap =  (UUV::sensorsMap *) m_sensors_map;
+
 	 do {
 		 bzero(buffer,256);
 		 printf("Waiting:\n");
 		 n = read(newsockfd,buffer,255);
 		 if (n < 0)
 			 error("ERROR reading from socket");
+		 else if (n == 0)
+			 error("ERROR client closed the socket ");
 
 		 buffer[strlen(buffer)-1]='\0';
 		 printf("Message: %s\n",buffer);
@@ -145,15 +149,47 @@ void *runServer2 (void *m_sensors_map)
 		 string outputStr = buffer;
 		 if (strcmp(buffer,"SENSORS") == 0){
 			outputStr.clear();
-			UUV::sensorsMap *sensMap =  (UUV::sensorsMap *) m_sensors_map;
 			for (UUV::sensorsMap::iterator it = sensMap->begin();  it != sensMap->end(); it++){
 				outputStr += it->first +"="+ doubleToString(it->second.averageRate,2) +",";
 				//reset sensors information
 				it->second.reset();
 			}
+			outputStr.replace(outputStr.length()-1 ,1 ,"\n");
 		 }
 		 else if (inputStr.find("SPEED") != string::npos){
-			 outputStr = "OK";
+			 //input string is in the form "SPEED=3.6,SENSOR1=-1,SENSOR2=0,..."
+			 char * dup   = strdup(inputStr.c_str());
+			 char * token = strtok(dup, ",");
+			 vector<string> uuvElements;
+			 while(token != NULL){
+				 uuvElements.push_back(string(token));
+				 // the call is treated as a subsequent calls to strtok:
+				 // the function continues from where it left in previous invocation
+				 token = strtok(NULL, ",");
+			 }
+			 free(dup);
+
+			 //iterate over tokens and extract the desired values from each token
+			 for (string str : uuvElements){
+				 char *dup2 = strdup(str.c_str());
+				 char *token2 = strtok(dup2, "=");
+				 vector<string> v;
+				 while(token2 != NULL){
+					 v.push_back(string(token2));
+					 // the call is treated as a subsequent calls to strtok:
+					 // the function continues from where it left in previous invocation
+					 token2 = strtok(NULL, ",");
+				 }
+				 free(dup2);
+				 if (v.size()==2){
+					 UUV::sensorsMap::iterator it = sensMap->find(v.at(0));
+					 if (it != sensMap->end()){
+						 it->second.state = stoi(v.at(1));
+					 }
+				 }
+			 }
+
+			 outputStr = "OK\n";
 		 }
 		 n = write(newsockfd, outputStr.c_str(), outputStr.length());
 		 if (n < 0)
