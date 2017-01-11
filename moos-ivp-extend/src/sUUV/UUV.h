@@ -39,6 +39,7 @@ class UUV : public AppCastingMOOSApp
 	   std::string m_uuv_name; //uuv name
 	   std::vector<std::string> m_uuv_sensors;
 	   double M_TIME_WINDOW;
+	   int PORT;
 
 
 	 private: // State variables
@@ -54,7 +55,8 @@ class UUV : public AppCastingMOOSApp
 	   	   public:
 		   	   std::string toString()
 		   	   {
-		   		    std::string str = name +"\t\t"+ intToString(numOfReadings) +"\t\t"+ doubleToString(averageRate,2);
+		   		    std::string str = name +"\t\t"+ intToString(numOfReadings)
+		   		    					   +"\t\t"+ doubleToString(averageRate,2) +"\t\t"+ intToString(state);
 		   			return str;
 		   	   }
 

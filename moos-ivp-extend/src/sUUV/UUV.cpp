@@ -26,6 +26,8 @@ UUV::UUV()
 	m_previous_iterate 		= m_app_start_time;
 
 	M_TIME_WINDOW 			= 10;
+
+	PORT 					= 8888;
 }
 
 
@@ -63,6 +65,10 @@ bool UUV::OnStartUp()
 		  else if (param == "TIME_WINDOW"){
 			  if (isNumber(value.c_str()))
 				  M_TIME_WINDOW = atoi(value.c_str());
+		  }
+		  else if (param == "PORT"){
+			  if (isNumber(value.c_str()))
+				  PORT = atoi(value.c_str());
 		  }
 		  else //throw a configuration warning
 			  reportUnhandledConfigWarning(original_line);
@@ -158,7 +164,7 @@ bool UUV::Iterate()
 	m_iterations++;
 
 	m_current_iterate = MOOSTime(true);
-	if (m_current_iterate - m_previous_iterate >= M_TIME_WINDOW){
+//	if (m_current_iterate - m_previous_iterate >= M_TIME_WINDOW){
 
 		string outputString = doubleToString(m_current_iterate - GetAppStartTime(), 2) +",";
 
@@ -178,7 +184,7 @@ bool UUV::Iterate()
 //		Utilities::writeToFile("log/sensorsRates.csv", outputString);
 
 		m_previous_iterate = m_current_iterate;
-	}
+//	}
 
 	AppCastingMOOSApp::PostReport();               // Add this line
 	return(true);
@@ -254,7 +260,7 @@ void UUV::initSensorsMap()
 //---------------------------------------------------------
 void UUV::initServer()
 {
-	initialiseServer(8888);
+	initialiseServer(PORT);
 	pthread_t thread;
 //	int n = pthread_create(&thread, NULL, runServer, NULL);
 	int n = pthread_create(&thread, NULL, runServer2,  (void *) &m_sensors_map);
