@@ -146,8 +146,12 @@ void *runServer2 (void *m_sensors_map)
 		 printf("Message: %s\n",buffer);
 
 		 string inputStr  = buffer;
-		 string outputStr = buffer;
-		 if (strcmp(buffer,"SENSORS") == 0){
+		 string outputStr = "Unknown Command. Doing nothing!";
+
+		 if (strcmp(buffer, "###") == 0){
+			outputStr = "###\n";
+		 }
+		 else if (strcmp(buffer,"SENSORS") == 0){
 			outputStr.clear();
 			for (UUV::sensorsMap::iterator it = sensMap->begin();  it != sensMap->end(); it++){
 				outputStr += it->first +"="+ doubleToString(it->second.averageRate,2) +",";
