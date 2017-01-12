@@ -1,0 +1,12 @@
+//------------------------------------------
+// sUUV config block
+//------------------------------------------
+ProcessConfig = sUUV
+{
+  AppTick		= 4
+  CommsTick		= 5
+  
+  NAME			= UUV
+  SENSORS		= SENSOR1, SENSOR2, SENSOR3
+  PORT			= 8888
+}

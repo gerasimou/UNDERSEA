@@ -1,0 +1,14 @@
+//------------------------------------------
+// sSensor config block
+//------------------------------------------
+ProcessConfig = SENSOR2
+{
+  AppTick		= 4
+  CommsTick		= 4
+  
+  MAX_APPCAST_EVENTS = 25
+  
+  NAME			= SENSOR2
+  //DEGRADATION	= 50:100:1
+  //DEGRADATION	= 150:200:0.1
+}

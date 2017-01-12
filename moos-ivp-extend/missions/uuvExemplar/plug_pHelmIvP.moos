@@ -1,0 +1,19 @@
+//------------------------------------------
+// pHelmIvP config block
+//------------------------------------------
+ProcessConfig = pHelmIvP
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  Behaviors  = uuv.bhv
+  Verbose    = quiet
+  Domain     = course:0:359:360
+  Domain     = speed:0:5:26
+  Domain     = depth:0:100:101
+
+  IVP_BEHAVIOR_DIR = ../../lib
+
+  ok_skew = any
+  active_start = false
+}
