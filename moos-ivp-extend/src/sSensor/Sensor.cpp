@@ -21,6 +21,7 @@ Sensor::Sensor()
   m_iterations 	 = 0;
   m_timewarp   	 = 1;
   m_nominal_rate = 0;
+  m_reliability	 = 1;
   m_sensor_name  = "NONE";
 
   //set stringstream precision
@@ -78,6 +79,9 @@ bool Sensor::OnStartUp()
 	      }
 		  else if(param == "DEGRADATION") { // get degradation details
 			  bool handled = handleDegradation(value);
+		  }
+		  else if(param == "RELIABILITY") { // get reliability details
+			  m_reliability = atof(value.c_str());
 		  }
 		  else //throw a configuration warning
 			  reportUnhandledConfigWarning(original_line);

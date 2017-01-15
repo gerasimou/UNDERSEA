@@ -34,6 +34,7 @@ class Sensor : public AppCastingMOOSApp
 	 private: // Configuration variables
 	   double m_nominal_rate; //parameter defined in moos file
 	   std::string m_sensor_name; //sensor name
+	   double m_reliability; //sensor reliability
 	   std::vector<Degradation> m_degradations;
 
 
