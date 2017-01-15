@@ -20,7 +20,18 @@ done
 
 
 #-------------------------------------------------------
-#  Part 2A: Create the .moos and .bhv files.
+#  Part 2: Parse configuration file
+#-------------------------------------------------------
+#go to missions directory
+cd moos-ivp-extend/missions/uuvExemplar
+
+java -jar $INVOCATION_ABS_DIR/UUV_DSL.jar $INVOCATION_ABS_DIR/mission.config
+
+cd $INVOCATION_ABS_DIR
+
+
+#-------------------------------------------------------
+#  Part 3: Create the .moos and .bhv files.
 #-------------------------------------------------------
 printf "Creating UUV mission and behaviour files\n"
 
@@ -28,7 +39,7 @@ printf "Creating UUV mission and behaviour files\n"
 cd moos-ivp-extend/missions/uuvExemplar
 
 #create mission
-nsplug meta_vehicle.moos targ_uuv.moos -f WARP=2
+nsplug meta_vehicle.moos targ_uuv.moos
 
 printf "UUV mission and behaviour files created successfully\n"
 # ls -l
@@ -38,7 +49,7 @@ cd $INVOCATION_ABS_DIR
 
 
 #-------------------------------------------------------
-#  Part 2B: Compile the controller
+#  Part 4: Compile the controller
 #-------------------------------------------------------
 printf "\nCreating UUV controller\n"
 

@@ -54,7 +54,7 @@ fi
 cd moos-ivp-extend/missions/uuvExemplar
 
 #start uuv simulator
-pAntler --MOOSTimeWarp=1 uuv.moos >& /dev/null &
+pAntler targ_uuv.moos >& /dev/null &
 
 sleep 3
 
