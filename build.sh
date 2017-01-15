@@ -3,6 +3,12 @@
 #get working directory
 INVOCATION_ABS_DIR=`pwd`
 
+MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
+
+CONFIG_FILE=mission.config
+
+CONTROLLER_DIR=UUV_Controller
+
 JUST_BUILD="no"
 
 
@@ -19,15 +25,22 @@ for ARGI; do
 done
 
 
+
 #-------------------------------------------------------
 #  Part 2: Parse configuration file
 #-------------------------------------------------------
-#go to missions directory
-cd moos-ivp-extend/missions/uuvExemplar
+# Arg1: configuration file
+# Arg2: Controller's directory
+# Arg3: Missions directory
 
-java -jar $INVOCATION_ABS_DIR/UUV_DSL.jar $INVOCATION_ABS_DIR/mission.config
+java -jar UUV_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
 
+if [[ $? -eq 0 ]]; then
+  printf "Error parsing configuration file. Building aborted!\n"
+  exit 0
+fi
 cd $INVOCATION_ABS_DIR
+
 
 
 #-------------------------------------------------------
@@ -36,13 +49,10 @@ cd $INVOCATION_ABS_DIR
 printf "Creating UUV mission and behaviour files\n"
 
 #go to missions directory
-cd moos-ivp-extend/missions/uuvExemplar
+cd $MISSION_DIR
 
 #create mission
 nsplug meta_vehicle.moos targ_uuv.moos
-
-printf "UUV mission and behaviour files created successfully\n"
-# ls -l
 
 cd $INVOCATION_ABS_DIR
 
@@ -54,7 +64,7 @@ cd $INVOCATION_ABS_DIR
 printf "\nCreating UUV controller\n"
 
 #go to initial directory & then to controller's directory
-cd UUV_Controller
+cd $CONTROLLER_DIR
 
 mvn package
 
@@ -65,3 +75,5 @@ fi
 # ls -l
 
 printf "\nUUV controller created successfully\n"
+
+cd $INVOCATION_ABS_DIR

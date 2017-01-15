@@ -10,15 +10,15 @@ REMOVE="no"
 function killAll {
 	# processesShoreside=("pAntler" "MOOSDB" "uProcessWatch" "uTimerScript" "pHostInfo" "pShare" "uFldShoreBroker" "uFldNodeComms" pMarineViewer)
 	processesVehicle=(MOOSDB uProcessWatch uSimMarine pNodeReporter pMarinePID pHelmIvP sSensor sUUV pMarineViewer pAntler)
-	printf "Shoreside:\t"
+	#printf "Shoreside:\t"
 	for i in ${processesShoreside[@]}; do
 		printf "%s\t" ${i}
 		kill -9 $(ps aux | grep ${i} | awk '{print $2}')
 	done
-	printf "\nVehicle:\ts"
+	#printf "\nVehicle:\ts"
 	for i in ${processesVehicle[@]}; do
-		printf "%s\t" ${i}
-		kill -9 $(ps aux | grep ${i} | awk '{print $2}')
+		#printf "%s\t" ${i}
+		kill -9 $(ps aux | grep ${i} | awk '{print $2}') >& /dev/null &
 	done
 	echo
 }
@@ -49,8 +49,8 @@ done
 #  Part 2: Do the cleaning!
 #-------------------------------------------------------
 if [ ${KILLALL} = "yes" ]; then
-	# kill -9 $(ps aux | grep '[p]Antler' | awk '{print $2}')
-	printf "killing all\n"
+	printf "Shutting down MOOS-IvP!\n"
+	#kill -9 $(ps aux | grep "pAntler"   | awk '{print $2}') >& /dev/null &
 	killAll
 fi
 

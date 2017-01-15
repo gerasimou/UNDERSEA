@@ -3,6 +3,10 @@
 #get working directory
 INVOCATION_ABS_DIR=`pwd`
 
+MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
+
+CONTROLLER_DIR=UUV_Controller
+
 BUILD="no"
 
 
@@ -51,7 +55,7 @@ fi
 #  Part 3: Launch the shoreside, the UUV & its controller
 #-------------------------------------------------------
 #go to missions directory
-cd moos-ivp-extend/missions/uuvExemplar
+cd $MISSION_DIR
 
 #start uuv simulator
 pAntler targ_uuv.moos >& /dev/null &
@@ -59,8 +63,13 @@ pAntler targ_uuv.moos >& /dev/null &
 sleep 3
 
 #go to initial directory & then to controller's directory
-cd $INVOCATION_ABS_DIR
-cd UUV_Controller
+cd $INVOCATION_ABS_DIR/$CONTROLLER_DIR
 
 #start controller
 java -jar target/UUV_Controller-jar-with-dependencies.jar
+EXIT_VALUE=$?
+
+if [[ $EXIT_VALUE -eq 1 ]]; then
+  cd $INVOCATION_ABS_DIR
+  ./clean.sh -k
+fi
