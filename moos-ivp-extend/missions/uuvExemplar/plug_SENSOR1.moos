@@ -3,12 +3,11 @@
 //------------------------------------------
 ProcessConfig = SENSOR1
 {
-  AppTick		= 3
-  CommsTick		= 3
-  
-  MAX_APPCAST_EVENTS = 25
-  
-  NAME			= SENSOR1
-  //DEGRADATION	= 50:100:1
-  //DEGRADATION	= 150:200:0.1
+	 AppTick = 3.0
+	 CommsTick = 3.0
+	 MAX_APPCAST_EVENTS = 25 
+	 NAME = SENSOR1
+	 RELIABILITY = 0.9
+	 DEGRADATION = 150.0:200.0:0.1
 }
+

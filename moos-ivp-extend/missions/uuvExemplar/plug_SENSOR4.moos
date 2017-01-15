@@ -1,13 +1,12 @@
 //------------------------------------------
 // sSensor config block
 //------------------------------------------
-ProcessConfig = SENSOR3
+ProcessConfig = SENSOR4
 {
 	 AppTick = 5.0
 	 CommsTick = 5.0
 	 MAX_APPCAST_EVENTS = 25 
-	 NAME = SENSOR3
-	 RELIABILITY = 0.5
-	 DEGRADATION = 50.0:100.0:0.1
+	 NAME = SENSOR4
+	 RELIABILITY = 0.99
 }
 

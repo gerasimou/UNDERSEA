@@ -6,10 +6,9 @@ Simulator  = true
 
 Community  = uuv
 
-MOOSTimeWarp = 5
-
+MOOSTimeWarp = 2
 LatOrigin  = 43.825300 
-LongOrigin = -70.330400
+LongOrigin = -70.330400 
 
 
 //------------------------------------------
@@ -20,18 +19,40 @@ ProcessConfig = ANTLER
   MSBetweenLaunches = 200
 
   Run = MOOSDB			@ NewConsole = false
+  Run = uProcessWatch   @ NewConsole = false
   Run = uSimMarine		@ NewConsole = false
   Run = pNodeReporter	@ NewConsole = false
   Run = pMarinePID		@ NewConsole = false
   Run = pMarineViewer	@ NewConsole = false
-  Run = uProcessWatch   @ NewConsole = false
   Run = pHelmIvP		@ NewConsole = false
-  Run = sOdometry		@ NewConsole = false
+  
   Run = sSensor			@ NewConsole = false ~ SENSOR1
   Run = sSensor			@ NewConsole = false ~ SENSOR2
   Run = sSensor			@ NewConsole = false ~ SENSOR3
+  
   Run = sUUV			@ NewConsole = false
 } 
+
+
+//------------------------------------------
+// uProcessWatch config block
+//------------------------------------------
+ProcessConfig = uProcessWatch
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  WATCH_ALL = true      // default is true
+
+  SUMMARY_WAIT = 10
+
+  term_report_interval = 0.8
+
+  NOWATCH   = uXMS*
+  NOWATCH   = uPokeDB*
+  NOWATCH   = uTermCommand*
+}
+
 
 
 //------------------------------------------
@@ -51,23 +72,112 @@ ProcessConfig = uSimMarine
 }
 
 
+
 //------------------------------------------
-// uProcessWatch config block
+// pNodeReporter config block
 //------------------------------------------
-ProcessConfig = uProcessWatch
+ProcessConfig = pNodeReporter
 {
-  AppTick   = 4
-  CommsTick = 4
-
-  term_report_interval = 0.8
-
-  summary_wait = 5
-
-  nowatch   = uXMS*
-  nowatch   = uPokeDB*
-  nowatch   = uTermCommand*
-  watch_all = true
+  AppTick	= 2
+  CommsTick	= 2
+  
+  VESSEL_TYPE   = UUV
 }
+
+
+
+//------------------------------------------
+// pMarinePID config block
+//------------------------------------------
+ProcessConfig = pMarinePID
+{
+  AppTick    = 20
+  CommsTick  = 20
+
+  VERBOSE       = true
+  DEPTH_CONTROL = true
+
+  // Yaw PID controller
+  YAW_PID_KP             = 0.4
+  YAW_PID_KD             = 0.1
+  YAW_PID_KI             = 0.0
+  YAW_PID_INTEGRAL_LIMIT = 0.07
+  
+  // Speed PID controller
+  SPEED_PID_KP           = 1.0
+  SPEED_PID_KD           = 0.0
+  SPEED_PID_KI           = 0.0
+  SPEED_PID_INTEGRAL_LIMIT = 0.07
+  
+  // Maximums
+  MAXRUDDER  = 100
+  MAXTHRUST  = 100
+  
+  // A non-zero SPEED_FACTOR overrides use of SPEED_PID
+  // Will set DESIRED_THRUST = DESIRED_SPEED * SPEED_FACTOR
+  SPEED_FACTOR = 20
+
+
+   //For depth
+   //Pitch PID controller
+   pitch_pid_kp                   = 1.5
+   pitch_pid_kd                   = 0.3
+   pitch_pid_ki                   = 0.004
+   pitch_pid_integral_limit       = 0
+
+   //ZPID controller
+   z_to_pitch_pid_kp              = 0.12
+   z_to_pitch_pid_kd              = 0.1
+   z_to_pitch_pid_ki              = 0.004
+   z_to_pitch_pid_integral_limit  = 0.05
+
+   maxpitch     = 15
+   maxelevator  = 13
+}
+
+
+
+//------------------------------------------
+// pMarineViewer config block
+//------------------------------------------
+ProcessConfig = pMarineViewer
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  TIFF_FILE            = forrest19.tif
+  
+  //Backview
+  set_pan_x            = -90
+  set_pan_y            = -280
+  zoom                 = 0.6
+  hash_delta           = 50
+  hash_shade           = 0.4
+  hash_viewable        = false
+  
+  //Vehicle variables
+  vehicle_shape_scale     = 5
+  vehicles_name_mode      = names
+  trails_connect_viewable = false
+  vehicles_active_color   = red
+  vehicles_inactive_color = red
+  vehicles_viewable       = true
+  trails_viewable         = false
+  
+  // Appcast configuration
+  appcast_height       = 70
+  appcast_width        = 30
+  appcast_viewable     = false
+  appcast_color_scheme = indigo
+  appcast_font_size    = xsmall
+  nodes_font_size      = small
+  procs_font_size      = small
+  
+  BUTTON_ONE = DEPLOY # DEPLOY=true
+  BUTTON_ONE = MOOS_MANUAL_OVERIDE=false # RETURN=false
+  BUTTON_TWO = RETURN # RETURN=true
+}
+
 
 
 //------------------------------------------
@@ -81,7 +191,8 @@ ProcessConfig = pHelmIvP
   Behaviors  = uuv.bhv
   Verbose    = quiet
   Domain     = course:0:359:360
-  Domain     = speed:0:4:21
+  Domain     = speed:0:5:26
+  Domain     = depth:0:100:101
 
   IVP_BEHAVIOR_DIR = ../../lib
 
@@ -89,93 +200,6 @@ ProcessConfig = pHelmIvP
   active_start = false
 }
 
-
-//------------------------------------------
-// pMarinePID config block
-//------------------------------------------
-ProcessConfig = pMarinePID
-{
-  AppTick    = 20
-  CommsTick  = 20
-
-  VERBOSE       = true
-  DEPTH_CONTROL = false
-
-  // Yaw PID controller
-  YAW_PID_KP		 = 0.5
-  YAW_PID_KD		 = 0.0
-  YAW_PID_KI		 = 0.0
-  YAW_PID_INTEGRAL_LIMIT = 0.07
-
-  // Speed PID controller
-  SPEED_PID_KP		 = 1.0
-  SPEED_PID_KD		 = 0.0
-  SPEED_PID_KI		 = 0.0
-  SPEED_PID_INTEGRAL_LIMIT = 0.07
-
-  //MAXIMUMS
-  MAXRUDDER    = 100
-  MAXTHRUST    = 100
-
-  // A non-zero SPEED_FACTOR overrides use of SPEED_PID
-  // Will set DESIRED_THRUST = DESIRED_SPEED * SPEED_FACTOR
-  SPEED_FACTOR = 20
-}
-
-
-//------------------------------------------
-// pMarineViewer config block
-//------------------------------------------
-ProcessConfig = pMarineViewer
-{
-  AppTick    = 4
-  CommsTick  = 4
-
-  TIFF_FILE            = forrest19.tif
-  set_pan_x            = -90
-  set_pan_y            = -280
-  zoom                 = 0.65
-  vehicle_shape_scale  = 1.5
-  hash_delta           = 50
-  hash_shade           = 0.4
-  hash_viewable        = true
-
-//  scope = ODOMETRY_DIST
-
-   // Appcast configuration
-  appcast_height       = 75
-  appcast_width        = 30
-  appcast_viewable     = true
-  appcast_color_scheme = indigo
-  nodes_font_size      = medium
-  procs_font_size      = medium
-  appcast_font_size    = small
-
-  BUTTON_ONE = DEPLOY # DEPLOY=true
-  BUTTON_ONE = MOOS_MANUAL_OVERIDE=false # RETURN=false
-  BUTTON_TWO = RETURN # RETURN=true
-}
-
-
-//------------------------------------------
-// pNodeReporter config block
-//------------------------------------------
-ProcessConfig = pNodeReporter
-{
-  AppTick	= 2
-  CommsTick	= 2
-  VESSEL_TYPE   = KAYAK
-}
-
-
-//------------------------------------------
-// sOdometry config block
-//------------------------------------------
-ProcessConfig = sOdometry
-{
-  AppTick	= 4
-  CommsTick	= 4
-}
 
 
 //------------------------------------------
