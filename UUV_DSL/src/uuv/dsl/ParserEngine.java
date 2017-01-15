@@ -6,9 +6,12 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.misc.Nullable;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import uuv.dsl.gen.UUVLexer;
 import uuv.dsl.gen.UUVParser;
+import uuv.dsl.gen.UUVVisitor;
 
 public class ParserEngine {
 
@@ -44,4 +47,40 @@ public class ParserEngine {
         };
         return errorListener;
     }
+	
+	
+	/**
+	 * Run visitor
+	 * @param inputString
+	 */
+	@SuppressWarnings("unused")
+	private static void runVisitor(String source){
+		//create parser
+	    UUVParser parser = ParserEngine.createParser(source);
+		// begin parsing at prog rule
+		ParseTree tree = parser.model();
+		//Create the visitor
+		UUVVisitor visitor = null;//new UUVVisitor();
+		// and visit the nodes
+		visitor.visit(tree);		
+	}
+	
+	
+	/**
+	 * Run listerner
+	 * @param inputString
+	 */
+	@SuppressWarnings("unused")
+	public static void runListerner(String source){
+		//create parser
+	    UUVParser parser = ParserEngine.createParser(source);
+	    // begin parsing at model rule
+		ParseTree tree = parser.model();	
+		// Create a generic parse tree walker that can trigger callbacks
+		ParseTreeWalker walker = new ParseTreeWalker();
+		// Create a listener
+		UUVListener listener = new UUVListener();
+		// Walk the tree created during the parse, trigger callbacks
+		walker.walk(listener, tree);
+	}
 }

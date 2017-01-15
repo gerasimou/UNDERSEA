@@ -4,43 +4,110 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import auxiliary.DSLException;
 import uuv.dsl.gen.UUVBaseListener;
 import uuv.dsl.gen.UUVParser;
 import uuv.dsl.gen.UUVParser.DegradationContext;
+import uuv.properties.UUVproperties;
 
 public class UUVListener extends UUVBaseListener {
 
+	UUVproperties properties = new UUVproperties();
 	
 	@Override 
-	public void enterSimulation(UUVParser.SimulationContext ctx) { 
-		System.out.println(ctx.value.getText());
+	public void enterSimulation(UUVParser.SimulationContext ctx) {
+		try {
+			properties.setSimulationTime(ctx.value.getText());
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}
 	}
 	
 	
 	@Override 
 	public void enterInvocation(UUVParser.InvocationContext ctx) { 
-		System.out.println(ctx.value.getText());
+		try {
+			properties.setTimeWindow(ctx.value.getText());
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}
 	}
+	
+	
+	@Override 
+	public void enterHost(UUVParser.HostContext ctx) { 
+		try {
+			properties.setHost(ctx.value.getText());
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}	
+	}
+	
+	
+	@Override 
+	public void enterPort(UUVParser.PortContext ctx) { 
+		try {
+			properties.setPort(ctx.value.getText());
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}	
+	}
+	
 
 	@Override 
+	public void enterSpeed(UUVParser.SpeedContext ctx) { 
+		try {
+			properties.setSpeed(ctx.value.getText());
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}	
+	}
+
+	
+	@Override 
+	public void enterUuv(UUVParser.UuvContext ctx) { 
+		try {
+			String name = ctx.name.getText();
+			String port = ctx.value.getText();
+			double min  = Double.parseDouble(ctx.min.getText());
+			double max  = Double.parseDouble(ctx.max.getText());
+			int steps 	= Integer.parseInt(ctx.steps.getText());
+			
+			properties.setUUV(name, port, min, max ,steps);
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + ctx.value.getLine() +")\t"+ e.getMessage());
+		}	
+
+	}
+	
+	
+	@Override 
 	public void enterSensor(UUVParser.SensorContext ctx) {		
-		System.out.println(ctx.getText());
-		String name 		= ctx.name.getText();
-		String reliability	= ctx.reliability.getText();
-		String rate			= ctx.rate.getText();
+//		System.out.println(ctx.getText());
+		try {
+			String name 		= ctx.name.getText();
+			double reliability	= Double.parseDouble(ctx.reliability.getText());
+			double rate			= Double.parseDouble(ctx.rate.getText());
 		
-		List<String> degradationList = new ArrayList<String>();
-		for (DegradationContext d : ctx.degradation()){
-			degradationList.add(d.begin.getText());
-			degradationList.add(d.end.getText());
-			degradationList.add(d.value.getText());
+			properties.setSensor(name, rate, reliability);
+		
+			for (DegradationContext d : ctx.degradation()){
+				double begin		= Double.parseDouble(d.begin.getText());
+				double end 			= Double.parseDouble(d.end.getText());
+				double percentage 	= Double.parseDouble(d.value.getText());
+				
+				properties.setDegradation(name, begin, end, percentage);
+				
+			}
+		
+	//		System.out.println( 	name +"\n"
+	//							+ 	reliability +"\n"
+	//							+ 	rate +"\n"
+	//							+	Arrays.toString(degradationList.toArray())
+	//						  );
+		} catch (DSLException e) {
+			System.err.println("ERROR (l:" + (ctx.name.getLine()-1) +")\t"+ e.getMessage());
 		}
-		
-		System.out.println( 	name +"\n"
-							+ 	reliability +"\n"
-							+ 	rate +"\n"
-							+	Arrays.toString(degradationList.toArray())
-						  );
 	}
 
 
