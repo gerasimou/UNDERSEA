@@ -12,8 +12,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import main.MainParser;
-
+import main.ParserEngine;
 
 public class Utility {
 	
@@ -23,7 +22,7 @@ public class Utility {
 		try {
 			if (properties == null){
 				properties = new Properties();
-				properties.load(new FileInputStream(MainParser.configFile));
+				properties.load(new FileInputStream(ParserEngine.configFile));
 			}
 		} 
 		catch (IOException e) {

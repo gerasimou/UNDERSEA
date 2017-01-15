@@ -17,12 +17,7 @@ SENSOR   {
 	degradation	= 150:200:0.1
 }
 
-SENSOR   { 
-	name 		= S1
-	rate 		= 5
-	reliability	= 0.9
-	degradation	= 150:200:0.1
-}
+
 
 SENSOR   { 
 	name 		= S2

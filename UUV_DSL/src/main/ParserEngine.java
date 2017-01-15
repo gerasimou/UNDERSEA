@@ -1,4 +1,4 @@
-package uuv.dsl;
+package main;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
@@ -9,14 +9,27 @@ import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import auxiliary.Utility;
+import uuv.dsl.UUVListener;
 import uuv.dsl.gen.UUVLexer;
 import uuv.dsl.gen.UUVParser;
 import uuv.dsl.gen.UUVVisitor;
 
 public class ParserEngine {
 
+	public static String configFile = "resources/config.properties";
+	public static String sourceFile = "resources/uuv.dsl";
+
 	
-	public static UUVParser createParser(String source){
+	public static void main (String args[]){
+		String source = Utility.readFile(sourceFile);
+		
+		//run listener/visitor
+		ParserEngine.runListerner(source);		
+	}
+
+	
+	private static UUVParser createParser(String source){
 		 // create a CharStream that reads from standard input
 		ANTLRInputStream input = new ANTLRInputStream(source); 
 		// create a lexer that feeds off of input CharStream
@@ -34,6 +47,7 @@ public class ParserEngine {
 		return parser;
 
 	}
+	
 	
 	private static BaseErrorListener createErrorListener() {
         BaseErrorListener errorListener = new BaseErrorListener() {
@@ -71,7 +85,7 @@ public class ParserEngine {
 	 * @param inputString
 	 */
 	@SuppressWarnings("unused")
-	public static void runListerner(String source){
+	private static void runListerner(String source){
 		//create parser
 	    UUVParser parser = ParserEngine.createParser(source);
 	    // begin parsing at model rule

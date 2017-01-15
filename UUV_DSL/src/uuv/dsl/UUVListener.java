@@ -1,9 +1,5 @@
 package uuv.dsl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import auxiliary.DSLException;
 import uuv.dsl.gen.UUVBaseListener;
 import uuv.dsl.gen.UUVParser;
@@ -12,7 +8,9 @@ import uuv.properties.UUVproperties;
 
 public class UUVListener extends UUVBaseListener {
 
+	/** Keeps all properties given in the file */
 	UUVproperties properties = new UUVproperties();
+	
 	
 	@Override 
 	public void enterSimulation(UUVParser.SimulationContext ctx) {
