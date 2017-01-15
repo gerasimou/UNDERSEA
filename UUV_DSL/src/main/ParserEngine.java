@@ -1,7 +1,6 @@
 package main;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
@@ -22,21 +21,17 @@ import uuv.properties.UUVproperties;
 
 public class ParserEngine {
 
-	public static String configFile = "resources/config.properties";
-	public static String sourceFile; 
+	public static String propertiesFile = "resources/config.properties";
+	public static String configFile; 
+	public static String controllerDir;
+	public static String missionDir;
 
 	
 	public static void main (String args[]){
 		try {
-			if (args.length == 0)
-				throw new DSLException("Configuration file not provided! Please fix this error!\n");
-			else if (args.length > 1)
-				throw new DSLException("Multiple arguments given. Only configuration file needed! Please fix this error!\n");
-	
-		
-			sourceFile = args[0];
+			parseCommandLineArguments(args);
 			
-			String source = Utility.readFile(sourceFile);
+			String source = Utility.readFile(configFile);
 						
 			ParserEngine engine = new ParserEngine();
 			
@@ -47,13 +42,35 @@ public class ParserEngine {
 			properties.generateMoosBlocks();
 			
 			System.out.println("Configuration file parsed successfully\n");
+			System.exit(1);
 
 		} catch (DSLException | FileNotFoundException e) {
 			System.err.println("ERROR: " +  e.getMessage());
+			System.exit(0);
 		}		
 	}
 
+	
+	private static void parseCommandLineArguments(String[] args) throws DSLException, FileNotFoundException{
+		if (args.length != 3)
+			throw new DSLException("Incorrect number of arguments! Please fix this error!\n" +
+									"\tArg 1) configuration file (e.g., mission.config)\n" + 
+									"\tArg 2) controller directory (e.g., UUV_Controller)\n" +
+									"\tArg 3) mission directory (e.g., moos-ivp-extend/missions/uuvExemplar)\n"
+									);	
+	
 
+		if (Utility.fileExists(args[0]))
+			configFile 		= args[0];
+
+		if (Utility.fileExists(args[1]))
+			controllerDir 	= args[1];
+
+		if (Utility.fileExists(args[2]))
+			missionDir 	= args[2];
+	}
+	
+	
 	/**
 	 * Create parser
 	 * @param source

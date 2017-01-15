@@ -23,7 +23,7 @@ public class Utility {
 		try {
 			if (properties == null){
 				properties = new Properties();
-				properties.load(new FileInputStream(ParserEngine.configFile));
+				properties.load(new FileInputStream(ParserEngine.propertiesFile));
 			}
 		} 
 		catch (IOException e) {
@@ -104,4 +104,12 @@ public class Utility {
 		return null;
 	}
 	
+	
+	public static boolean fileExists(String fileName) throws FileNotFoundException{
+		File f = new File(fileName);
+		if (!f.exists())
+			throw new FileNotFoundException("File "+ fileName +" does not exist!. Please fix this error.\n");
+		return true;
+
+	}
 }

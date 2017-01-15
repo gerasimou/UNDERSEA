@@ -1,13 +1,19 @@
 package uuv.properties;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import auxiliary.DSLException;
 import auxiliary.Utility;
+import main.ParserEngine;
 
 public class UUVproperties {
 
@@ -127,16 +133,19 @@ public class UUVproperties {
 	
 	public void generateMoosBlocks (){
 		//generate UUV moos block
-		Utility.exportToFile("plug_UUV.moos", uuv.toString(), false);
+		Utility.exportToFile(ParserEngine.missionDir +"/plug_UUV.moos", uuv.toString(), false);
 
 		//generate sensors moos files
 		for (Sensor sensor : sensorsMap.values()){
-			String filename =  "plug_"+ sensor.name +".moos";
+			String filename =  ParserEngine.missionDir +"/plug_"+ sensor.name +".moos";
 			Utility.exportToFile(filename, sensor.toString(), false);
 		}
 		
 		//generate target vehicle block
 		generateTargetVehicleBlock();
+		
+		//generate controller properties
+		generateControllerProperties();
 	}
 	
 	
@@ -190,9 +199,43 @@ public class UUVproperties {
 
 		
 		//write
-		Utility.exportToFile("meta_vehicle.moos", str.toString(), false);
+		Utility.exportToFile(ParserEngine.missionDir +"/meta_vehicle.moos", str.toString(), false);
 
 	}
+	
+	
+	private void generateControllerProperties(){
+		try {
+			String propertiesDirName	= ParserEngine.controllerDir + "/resources/";
+			String propertiesFilename 	= propertiesDirName + "config.properties";
+			File propertiesDir 			= new File(propertiesDirName);
+			File propertiesFile			= new File(propertiesFilename);
+			
+			if (!propertiesDir.exists())
+				propertiesDir.mkdirs();
+						
+			if (!propertiesFile.exists())
+				//create new properties file
+				propertiesFile.createNewFile();
+
+			Properties properties = new Properties();
+			properties.load(new FileInputStream(propertiesFilename));
+			properties.put("TIME_WINDOW", timeWindow);
+			properties.put("SIMULATION_TIME", simulationTime);
+			properties.put("SIMULATION_SPEED", simulationSpeed);
+			properties.put("PORT", uuv.port);
+			
+			FileOutputStream out = new FileOutputStream(propertiesFile);
+			properties.store(out, null);
+			out.close();
+				
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	
 	class UUV{
