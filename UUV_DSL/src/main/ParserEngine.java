@@ -9,11 +9,13 @@ import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import auxiliary.DSLException;
 import auxiliary.Utility;
 import uuv.dsl.UUVListener;
 import uuv.dsl.gen.UUVLexer;
 import uuv.dsl.gen.UUVParser;
 import uuv.dsl.gen.UUVVisitor;
+import uuv.properties.UUVproperties;
 
 public class ParserEngine {
 
@@ -24,12 +26,25 @@ public class ParserEngine {
 	public static void main (String args[]){
 		String source = Utility.readFile(sourceFile);
 		
+		
+		ParserEngine engine = new ParserEngine();
+		
 		//run listener/visitor
-		ParserEngine.runListerner(source);		
+		UUVproperties properties  = engine.runListerner(source);
+		
+		//get properties object
+		System.out.println(properties.toString());
+		
+		
 	}
 
-	
-	private static UUVParser createParser(String source){
+
+	/**
+	 * Create parser
+	 * @param source
+	 * @return
+	 */
+	private UUVParser createParser(String source){
 		 // create a CharStream that reads from standard input
 		ANTLRInputStream input = new ANTLRInputStream(source); 
 		// create a lexer that feeds off of input CharStream
@@ -49,7 +64,11 @@ public class ParserEngine {
 	}
 	
 	
-	private static BaseErrorListener createErrorListener() {
+	/**
+	 * Create error listener
+	 * @return
+	 */
+	private BaseErrorListener createErrorListener() {
         BaseErrorListener errorListener = new BaseErrorListener() {
 
             @Override
@@ -68,9 +87,9 @@ public class ParserEngine {
 	 * @param inputString
 	 */
 	@SuppressWarnings("unused")
-	private static void runVisitor(String source){
+	private  void runVisitor(String source){
 		//create parser
-	    UUVParser parser = ParserEngine.createParser(source);
+	    UUVParser parser = createParser(source);
 		// begin parsing at prog rule
 		ParseTree tree = parser.model();
 		//Create the visitor
@@ -81,13 +100,13 @@ public class ParserEngine {
 	
 	
 	/**
-	 * Run listerner
+	 * Run listener
 	 * @param inputString
 	 */
 	@SuppressWarnings("unused")
-	private static void runListerner(String source){
+	private UUVproperties runListerner(String source){
 		//create parser
-	    UUVParser parser = ParserEngine.createParser(source);
+	    UUVParser parser = createParser(source);
 	    // begin parsing at model rule
 		ParseTree tree = parser.model();	
 		// Create a generic parse tree walker that can trigger callbacks
@@ -96,5 +115,17 @@ public class ParserEngine {
 		UUVListener listener = new UUVListener();
 		// Walk the tree created during the parse, trigger callbacks
 		walker.walk(listener, tree);
+		
+		UUVproperties properties = null; 
+		try {
+			properties = listener.getProperties();
+			properties.checkProperties();
+		} 
+		catch (DSLException e) {
+			System.err.println("ERROR: \t"+ e.getMessage());
+			System.exit(0);
+		}
+		
+		return properties;
 	}
 }

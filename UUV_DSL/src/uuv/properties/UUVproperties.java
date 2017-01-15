@@ -2,6 +2,7 @@ package uuv.properties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class UUVproperties {
 	private String port;
 
 	/** port*/
-	private String speed;
+	private String simulationSpeed;
 
 	/** UUV*/
 	private UUV uuv;
@@ -36,9 +37,32 @@ public class UUVproperties {
 		timeWindow		= null;
 		host			= null;
 		port			= null;
-		speed			= null;
+		simulationSpeed	= null;
 		uuv				= null;
 		sensorsMap		= new HashMap<String, Sensor>();
+	}
+	
+	
+	public void checkProperties() throws DSLException{
+		StringBuilder errors = new StringBuilder();
+		if (simulationTime == null)
+			errors.append("* Undefined simulation time! (e.g., simulation time = 10)\n");
+		if (simulationSpeed == null)
+			errors.append("* Undefined simulation speed! (e.g., simulation speed = 2)\n");
+		if (timeWindow == null)
+			errors.append("* Undefined time window! (e.g., time window = 10)\n");
+		if (host == null)
+			errors.append("* Undefined host! (e.g., host = localhost)\n");
+		if (port == null)
+			errors.append("* Undefined port! (e.g., port = 12345)\n");
+		if (uuv == null)
+			errors.append("* Undefined uuv configuration block! (e.g., UUV {...})\n");
+		if (sensorsMap.size() == 0)
+			errors.append("* No sensors found! (e.g., (e.g., Sensor {...})\n");
+		
+		if (errors.length() > 0)
+			throw new DSLException( "Incorrect configuration file!\n" + errors.toString());
+	
 	}
 	
 	
@@ -71,9 +95,9 @@ public class UUVproperties {
 	
 
 	public void setSpeed(String s) throws DSLException{
-		if (speed != null)
+		if (simulationSpeed != null)
 			throw new DSLException("Speed is already defined. Value Ignored!");
-		this.speed = s;
+		this.simulationSpeed = s;
 	}
 
 	
@@ -96,7 +120,7 @@ public class UUVproperties {
 //		if (sensorsMap.containsKey(name))
 //			throw new DSLException("Sensor "+ name + "properties already defined. Block Ignored!");
 		Range newDegradation = new Range (begin, end, percentage);
-		sensorsMap.get(sensorName).degradationsList.add(newDegradation);
+		sensorsMap.get(sensorName).addDegradation(newDegradation);
 	}
 
 	
@@ -104,6 +128,9 @@ public class UUVproperties {
 	class UUV{
 		/** name*/
 		private String name;
+
+		/** name*/
+		private String rate;
 
 		/** port*/
 		private String port;
@@ -116,34 +143,61 @@ public class UUVproperties {
 			this.name			= name;
 			this.port			= port;
 			this.speedRange		= new Range (min, max, steps);
+			this.rate			= "4";
 		}
 		
 		
-		protected String getName(){
+		public String getName(){
 			return this.name;
 		}
 		
 		
-		protected String getPort(){
+		public String getPort(){
 			return this.port;
 		}
 		
 		
-		protected double getSpeedMax(){
+		public double getSpeedMax(){
 			return speedRange.max;
 		}
 
 		
-		protected double getSpeedMin(){
+		public double getSpeedMin(){
 			return speedRange.min;
 		}
 		
 		
-		protected int getSpeedSteps(){
+		public int getSpeedSteps(){
 			return (int) speedRange.value;
 		}
 
 
+		public String toString(){
+			StringBuilder str = new StringBuilder();
+			str.append("//------------------------------------------\n");
+			str.append("// sUUV config block\n");
+			str.append("//------------------------------------------\n");
+			str.append("ProcessConfig = " + name +"\n");
+			str.append("{\n");
+			str.append("\t AppTick = " + rate +"\n");
+			str.append("\t CommsTick = " +  rate +"\n");
+			str.append("\t MAX_APPCAST_EVENTS = 25 \n");
+			str.append("\t NAME = " + name +"\n");
+			str.append("\t PORT = " + port +"\n");
+			
+			String sensorsStr = "";
+			Iterator<String> iterator = sensorsMap.keySet().iterator();
+			while (iterator.hasNext()){
+				sensorsStr += iterator.next();
+				if (iterator.hasNext())
+					sensorsStr += ",";
+			}
+			str.append("\t SENSORS = " + sensorsStr +"\n");
+			
+			str.append("}\n\n");
+			
+			return str.toString();
+		}
 	}
 
 	
@@ -160,7 +214,7 @@ public class UUVproperties {
 
 		/** degradation list*/
 		private List<Range> degradationsList;
-
+		
 
 		public Sensor(String name, double rate, double reliability){
 			this.name				= name;
@@ -168,6 +222,12 @@ public class UUVproperties {
 			this.reliability		= reliability;
 			this.degradationsList	= new ArrayList<Range>();
 		}
+		
+		
+		protected void addDegradation(Range degradation){
+			degradationsList.add(degradation);
+		}
+
 		
 		protected String getName(){
 			return this.name;
@@ -183,6 +243,27 @@ public class UUVproperties {
 			return this.reliability;
 		}
 
+		
+		public String toString(){
+			StringBuilder str = new StringBuilder();
+			str.append("//------------------------------------------\n");
+			str.append("// sSensor config block\n");
+			str.append("//------------------------------------------\n");
+			str.append("ProcessConfig = " + name +"\n");
+			str.append("{\n");
+			str.append("\t AppTick = " + rate +"\n");
+			str.append("\t CommsTick = " + rate +"\n");
+			str.append("\t MAX_APPCAST_EVENTS = 25 \n");
+			str.append("\t NAME = " + name +"\n");
+			str.append("\t RELIABILITY = " + reliability +"\n");
+			for (Range d  : degradationsList){
+				str.append("\t DEGRADATION = " + d.toString() +"\n");
+			}				
+			str.append("}\n\n");
+			
+			return str.toString();
+		}
+		
 	}
 	
 	
@@ -200,6 +281,10 @@ public class UUVproperties {
 			this.min 		= min;
 			this.max 		= max;
 			this.value		= value;
+		}
+		
+		public String toString(){
+			return min +":"+ max +":"+ value;
 		}
 	}
 }

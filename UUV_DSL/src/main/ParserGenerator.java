@@ -2,7 +2,7 @@ package main;
 
 public class ParserGenerator {
 
-	public static String grammar = "UUV.g4";
+	public static String grammar = "grammar/UUV.g4";
 
 	
 	public static void main (String args[]){

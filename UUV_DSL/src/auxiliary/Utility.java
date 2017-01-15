@@ -101,7 +101,6 @@ public class Utility {
 			while ((line = bfr.readLine()) != null) {
 				model.append(line + "\n");
 			}
-			model.delete(model.length() - 1, model.length());
 			return model.toString();
 		} catch (IOException e) {
 			e.printStackTrace();

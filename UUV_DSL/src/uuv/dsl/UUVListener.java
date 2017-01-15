@@ -9,7 +9,11 @@ import uuv.properties.UUVproperties;
 public class UUVListener extends UUVBaseListener {
 
 	/** Keeps all properties given in the file */
-	UUVproperties properties = new UUVproperties();
+	private UUVproperties properties = new UUVproperties();
+	
+	public UUVproperties getProperties(){
+		return this.properties;
+	}
 	
 	
 	@Override 
