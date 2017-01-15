@@ -1,7 +1,7 @@
 lexer grammar UUV_Terminals; // note "lexer grammar"
 
 @lexer::header {
-  package org.spg.uuv.dsl.gen;
+  package uuv.dsl.gen;
 } 
 
 ASSIGN: 
@@ -23,9 +23,14 @@ TIME_WINDOW:
 	'time window'
 ;
 
+SIMULATION_SPEED:
+	'simulation speed'
+;
+
 SPEED:
 	'speed'
 ;
+
 
 NAME:
 	'name'

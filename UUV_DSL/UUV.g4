@@ -3,8 +3,8 @@ grammar UUV;
 import UUV_Terminals; // includes all rules from UUV_Terminals.g4 
 
 @parser::header {
-  package org.spg.uuv.dsl.gen;
-  import java.util.*;
+  package uuv.dsl.gen;
+  import java.util.*; 
 } 
 
 @parser::members {
@@ -42,13 +42,17 @@ port:
 ;   
 
 speed:
-		SPEED ASSIGN value=INT
+		SIMULATION_SPEED ASSIGN value=INT
 ;
 
 uuv:
 		'UUV' 
 		'{' 
-			NAME ASSIGN name=ID					
+			(
+				NAME ASSIGN name=ID	
+			|	SPEED ASSIGN min=(INT | DOUBLE) ':' max=(INT | DOUBLE) ':' steps=INT
+			|	SERVER_PORT ASSIGN value=INT
+			)+
 		'}'
 ;
 
