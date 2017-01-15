@@ -1,26 +1,38 @@
 simulation time 	= 100
 time window 		= 5
 host 				= localhost
-port 				= 8888
+port 				= 9999
 simulation speed 	= 2
 
 UUV   { 
-	name 	= simos
+	name 	= nautilus
 	speed 	= 0:4:21
-	port	= 9999 	
+	port	= 888
 }
 	        
 SENSOR   { 
-	name 		= S1
-	rate 		= 5
+	name 		= SENSOR1
+	rate 		= 3
 	reliability	= 0.9
 	degradation	= 150:200:0.1
 }
 
-
+SENSOR   { 
+	name 		= SENSOR2
+	rate 		= 3
+	reliability	= 0.9
+	degradation	= 50:100:0.8
+}
 
 SENSOR   { 
-	name 		= S2
+	name 		= SENSOR3
 	rate 		= 5
-	reliability	= 0.9
+	reliability	= 0.5
+	degradation	= 50:100:0.1
+}
+
+SENSOR   { 
+	name 		= SENSOR4
+	rate 		= 5
+	reliability	= 0.99
 }

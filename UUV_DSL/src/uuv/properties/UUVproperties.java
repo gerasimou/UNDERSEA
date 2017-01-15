@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import auxiliary.DSLException;
+import auxiliary.Utility;
 
 public class UUVproperties {
 
@@ -123,6 +124,75 @@ public class UUVproperties {
 		sensorsMap.get(sensorName).addDegradation(newDegradation);
 	}
 
+	
+	public void generateMoosBlocks (){
+		//generate UUV moos block
+		Utility.exportToFile("plug_UUV.moos", uuv.toString(), false);
+
+		//generate sensors moos files
+		for (Sensor sensor : sensorsMap.values()){
+			String filename =  "plug_"+ sensor.name +".moos";
+			Utility.exportToFile(filename, sensor.toString(), false);
+		}
+		
+		//generate target vehicle block
+		generateTargetVehicleBlock();
+	}
+	
+	
+	private void generateTargetVehicleBlock(){
+		StringBuilder str = new StringBuilder();
+		str.append("//------------------------------------------\n");
+		str.append("//meta vehicle config file\n");
+		str.append("//------------------------------------------\n");
+		str.append("ServerHost = " + host +"\n");
+		str.append("ServerPort = " + port +"\n");
+		str.append("Simulator =  true\n");
+		str.append("Community = " + uuv.name+"\n");
+		str.append("LatOrigin  = 43.825300\n"); 
+		str.append("LongOrigin = -70.330400\n"); 
+		str.append("MOOSTimeWarp = " + simulationSpeed+"\n\n");
+		
+		str.append("//------------------------------------------\n");
+		str.append("// Antler configuration  block\n");
+		str.append("//------------------------------------------\n");
+		str.append("ProcessConfig = ANTLER\n");
+		str.append("{\n");
+		str.append("\t MSBetweenLaunches = 200\n");
+		str.append("\t   Run = MOOSDB			@ NewConsole = false\n");
+		str.append("\t   Run = uProcessWatch	@ NewConsole = false\n");
+		str.append("\t   Run = uSimMarine		@ NewConsole = false\n");
+		str.append("\t   Run = pNodeReporter	@ NewConsole = false\n");
+		str.append("\t   Run = pMarinePID		@ NewConsole = false\n");
+		str.append("\t   Run = pMarineViewer	@ NewConsole = false\n\n");
+		
+		str.append("\t   Run = pHelmIvP			@ NewConsole = false\n\n");
+		
+		str.append("\t   Run = sUUV				@ NewConsole = false ~" + uuv.name +"\n");
+		
+		for (String sensorName  : sensorsMap.keySet()){
+			str.append("\t   Run = sSensor			@ NewConsole = false ~" + sensorName +"\n");
+		}				
+		str.append("}\n\n");
+
+		str.append("#include plug_uProcessWatch.moos\n");
+		str.append("#include plug_uSimMarine.moos\n");
+		str.append("#include plug_pNodeReporter.moos\n");
+		str.append("#include plug_pMarinePID.moos\n");
+		str.append("#include plug_pMarineViewer.moos\n");
+		str.append("#include plug_pHelmIvP.moos\n");
+
+		str.append("#include plug_UUV.moos\n");
+		
+		for (String sensorName  : sensorsMap.keySet()){
+			str.append("#include plug_" + sensorName +".moos\n");
+		}				
+
+		
+		//write
+		Utility.exportToFile("meta_vehicle.moos", str.toString(), false);
+
+	}
 	
 	
 	class UUV{
@@ -259,7 +329,7 @@ public class UUVproperties {
 			for (Range d  : degradationsList){
 				str.append("\t DEGRADATION = " + d.toString() +"\n");
 			}				
-			str.append("}\n\n");
+			str.append("}\n");
 			
 			return str.toString();
 		}

@@ -1,5 +1,8 @@
 package main;
 
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -20,22 +23,34 @@ import uuv.properties.UUVproperties;
 public class ParserEngine {
 
 	public static String configFile = "resources/config.properties";
-	public static String sourceFile = "resources/uuv.dsl";
+	public static String sourceFile; 
 
 	
 	public static void main (String args[]){
-		String source = Utility.readFile(sourceFile);
+		try {
+			if (args.length == 0)
+				throw new DSLException("Configuration file not provided! Please fix this error!\n");
+			else if (args.length > 1)
+				throw new DSLException("Multiple arguments given. Only configuration file needed! Please fix this error!\n");
+	
 		
-		
-		ParserEngine engine = new ParserEngine();
-		
-		//run listener/visitor
-		UUVproperties properties  = engine.runListerner(source);
-		
-		//get properties object
-		System.out.println(properties.toString());
-		
-		
+			sourceFile = args[0];
+			
+			String source = Utility.readFile(sourceFile);
+						
+			ParserEngine engine = new ParserEngine();
+			
+			//run listener/visitor
+			UUVproperties properties  = engine.runListerner(source);
+			
+			//generate moos files
+			properties.generateMoosBlocks();
+			
+			System.out.println("Configuration file parsed successfully\n");
+
+		} catch (DSLException | FileNotFoundException e) {
+			System.err.println("ERROR: " +  e.getMessage());
+		}		
 	}
 
 
@@ -128,4 +143,5 @@ public class ParserEngine {
 		
 		return properties;
 	}
+	
 }
