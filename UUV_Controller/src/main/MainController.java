@@ -12,10 +12,11 @@ public class MainController {
 		try {
 			Controller controller = new ControllerRQV();
 			controller.run();
-			System.exit(-1);
+			System.exit(1);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 
 	}

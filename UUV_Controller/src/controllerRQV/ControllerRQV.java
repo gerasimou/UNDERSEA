@@ -1,5 +1,6 @@
 package controllerRQV;
 
+import auxiliary.Utility;
 import controller.Controller;
 
 public class ControllerRQV extends Controller {
@@ -7,7 +8,7 @@ public class ControllerRQV extends Controller {
 	
 	public ControllerRQV() {
 		//call superclass
-		super("localhost", 8888);
+		super("localhost", Integer.parseInt(Utility.getProperty("PORT")));
 
 		//init MAPE elements
 	    monitor  	= new MonitorRQV();

@@ -55,7 +55,7 @@ public abstract class Controller {
 		    effector 	= new Effector(client);		    
 		    
 			//init time window
-			TIME_WINDOW = Double.parseDouble(Utility.getProperty("TIME_WINDOW"));
+			TIME_WINDOW = Double.parseDouble(Utility.getProperty("TIME_WINDOW")) * 1000;
 			
 			//init sumulation time
 			SIMULATION_TIME = Double.parseDouble(Utility.getProperty("SIMULATION_TIME")) * 1000;
@@ -76,7 +76,7 @@ public abstract class Controller {
 		
 		do{
 			now = System.currentTimeMillis();
-			if (now - previousInvocation > (TIME_WINDOW * 1000)){
+			if (now - previousInvocation > (TIME_WINDOW)){
 				
 				sensor.run();
 				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tSending:\t"+ sensor.getReply());

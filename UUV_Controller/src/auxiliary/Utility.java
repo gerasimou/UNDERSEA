@@ -3,14 +3,11 @@ package auxiliary;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import main.MainController;
 
@@ -19,7 +16,7 @@ public class Utility {
 	
 	private static Properties properties;
 	
- 	static{
+  	static{
 		try {
 			if (properties == null){
 				properties = new Properties();
@@ -31,22 +28,6 @@ public class Utility {
 		}
 	}
 	
-	public static void setup(){
-		try {
-			System.setProperty( "java.library.path", "/Users/sgerasimou/Documents/Prism/prism-4.2.1/lib");
-		    
-			ClassLoader.class.getDeclaredField( "sys_paths" ).set(null, null);
-			ClassLoader.class.getDeclaredField( "sys_paths" ).setAccessible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-	public static Set<Entry<Object, Object>> getPropertiesEntrySet(){
-		return properties.entrySet();
-	}
-
 	
 	public static String getProperty (String key){
 		String result = properties.getProperty(key); 
@@ -54,7 +35,15 @@ public class Utility {
 			  throw new IllegalArgumentException(key.toUpperCase() + " name not found!");
 		return result;		
 	}	
-	
+
+	public static String getProperty (String propertiesFile, String key){
+		
+		String result = properties.getProperty(key); 
+		if (result == null)
+			  throw new IllegalArgumentException(key.toUpperCase() + " name not found!");
+		return result;		
+	}	
+
 	
 	public static void exportToFile(String fileName, String output, boolean append){
 		try {
@@ -68,47 +57,29 @@ public class Utility {
 		}
 	}
 
-	
-	public static void createFileAndExport(String inputFileName, String outputFileName, String outputStr){
-		FileChannel inputChannel 	= null;
-		FileChannel outputChannel	= null;
-				
-		try {
-			File input 	= new File(inputFileName);
-			File output 	= new File(outputFileName);
-			
-			inputChannel 	= new FileInputStream(input).getChannel();
-			outputChannel	= new FileOutputStream(output).getChannel();
-			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
 
-			inputChannel.close();
-			outputChannel.close();
-			
-			exportToFile(outputFileName, outputStr, false);
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	
-	public static String readFile(String fileName) {
+	public static String readFile(String fileName) throws FileNotFoundException {
+		File file = new File(fileName);
+		if (!file.exists())
+			throw new FileNotFoundException("File "+ fileName +" does not exist!. Please fix this error.\n");
+		
+		
 		StringBuilder model = new StringBuilder(100);
 		BufferedReader bfr = null;
 
 		try {
-			bfr = new BufferedReader(new FileReader(new File(fileName)));
+			bfr = new BufferedReader(new FileReader(file));
 			String line = null;
 			while ((line = bfr.readLine()) != null) {
 				model.append(line + "\n");
 			}
-			model.delete(model.length() - 1, model.length());
 			return model.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		return null;
-	}
-	
+	}	
 }
