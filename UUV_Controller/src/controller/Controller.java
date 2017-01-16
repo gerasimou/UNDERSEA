@@ -6,7 +6,7 @@ import java.util.TimerTask;
 import auxiliary.Utility;
 import controller.comms.Client;
 
-public abstract class Controller extends TimerTask{
+public class Controller extends TimerTask{
 
 	/** Sensor handle*/
 	private Sensor sensor;
@@ -49,16 +49,21 @@ public abstract class Controller extends TimerTask{
 	/**
 	 * Controller constructor
 	 */
-	public Controller(String hostName, int portNumber) {		
+	public Controller(Monitor monitor, Analyser analyser, Planner planner, Executor executor) {		
 	    try {
 	    	//init comms client
-	    	host	= hostName;
-	    	port	= portNumber;
+	    	host	= "localhost";
+	    	port	= Integer.parseInt(Utility.getProperty("PORT"));
 	    	client	= new Client(host, port);
 	    	
 		    //init MAPE
 			sensor 		= new Sensor(client);		    
 		    effector 	= new Effector(client);		    
+		    
+		    this.monitor 	= monitor;
+		    this.analyser	= analyser;
+		    this.planner	= planner;
+		    this.executor	= executor;
 		    
 			//init time window
 			TIME_WINDOW = Math.round(Double.parseDouble(Utility.getProperty("TIME_WINDOW")) * 1000);

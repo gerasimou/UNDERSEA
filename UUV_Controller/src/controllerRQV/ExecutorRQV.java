@@ -1,7 +1,6 @@
 package controllerRQV;
 
 import java.util.Random;
-
 import controller.Executor;
 
 public class ExecutorRQV extends Executor {
