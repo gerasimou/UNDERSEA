@@ -29,12 +29,12 @@
 	<dependencies>
   
 		<!--  PRISM model checker -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.modelChecker.prism</groupId>
 			<artifactId>prism</artifactId>
 			<version>4.2.1</version>
 			<type>jar</type>
-		</dependency> --> 
+		</dependency> 
 		  
   	</dependencies>
   	
