@@ -56,8 +56,6 @@ public class Utility {
 			e.printStackTrace();
 		}
 	}
-
-
 	
 	
 	public static String readFile(String fileName) throws FileNotFoundException {
@@ -82,4 +80,8 @@ public class Utility {
 		}
 		return null;
 	}	
+
+
+
+
 }

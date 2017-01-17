@@ -1,11 +1,11 @@
-package controllerRQV;
+package controllerPMC;
 
 import java.util.Random;
 import controller.Executor;
 
-public class ExecutorRQV extends Executor {
+public class ExecutorPMC extends Executor {
 
-	public ExecutorRQV() {
+	public ExecutorPMC() {
 	}
 
 	@Override

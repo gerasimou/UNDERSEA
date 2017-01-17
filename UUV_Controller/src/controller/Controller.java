@@ -86,8 +86,7 @@ public class Controller extends TimerTask{
 	public void run(){			
 		sensor.run();
 		System.out.println((System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED 
-							+"\tSending:\t"+ sensor.getReply());
-		
+							+"\tSending:\t"+ sensor.getReply());				
 		monitor.run();
 		
 		analyser.run();
@@ -127,33 +126,33 @@ public class Controller extends TimerTask{
 	 */
 	@Deprecated
 	public void run2(){
-		long previousInvocation = System.currentTimeMillis();
-		
-		long now, start=previousInvocation;
-				
-		do{
-			now = System.currentTimeMillis();
-			if (now - previousInvocation > (TIME_WINDOW)){
-				previousInvocation = now;
-				
-				sensor.run();
-				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tSending:\t"+ sensor.getReply());
-				
-				monitor.run();
-				
-				analyser.run();
-				
-				planner.run();
-				
-				executor.run();
-				
-				effector.setCommand(executor.getCommand());
-				effector.run();
-				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tReceived:\t"+ effector.getReply() +"\n");				
-			}	
-		}
-		while (now - start <= SIMULATION_TIME);
-		shutDown();
+//		long previousInvocation = System.currentTimeMillis();
+//		
+//		long now, start=previousInvocation;
+//				
+//		do{
+//			now = System.currentTimeMillis();
+//			if (now - previousInvocation > (TIME_WINDOW)){
+//				previousInvocation = now;
+//				
+//				sensor.run();
+//				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tSending:\t"+ sensor.getReply());
+//				
+//				monitor.run();
+//				
+//				analyser.run();
+//				
+//				planner.run();
+//				
+//				executor.run();
+//				
+//				effector.setCommand(executor.getCommand());
+//				effector.run();
+//				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tReceived:\t"+ effector.getReply() +"\n");				
+//			}	
+//		}
+//		while (now - start <= SIMULATION_TIME);
+//		shutDown();
 	}
 	
 }

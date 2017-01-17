@@ -1,10 +1,10 @@
-package controllerRQV;
+package controllerPMC;
 
 import controller.Planner;
 
-public class PlannerRQV extends Planner {
+public class PlannerPMC extends Planner {
 
-	public PlannerRQV() {
+	public PlannerPMC() {
 	}
 
 	@Override

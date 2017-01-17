@@ -4,6 +4,7 @@ import java.util.Random;
 
 import controller.Knowledge;
 import controller.Planner;
+import controller.uuv.UUVSensor;
 
 public class PlannerRandom extends Planner {
 
@@ -14,11 +15,17 @@ public class PlannerRandom extends Planner {
 	}
 
 	@Override
-	public void run() {
+	public void run () {
 		Knowledge.setUUVspeed(rand.nextDouble()+3);
-		Knowledge.setSensorState(1, rand.nextInt(4)-1);
-		Knowledge.setSensorState(2, rand.nextInt(4)-1);
-		Knowledge.setSensorState(3, rand.nextInt(4)-1);
+		
+		for (UUVSensor uuvSensor : Knowledge.sensorsMap.values()){
+			Knowledge.setSensorState(uuvSensor.getName(), rand.nextInt(4)-1);
+		}
+//		Knowledge.setSensorState("SENSOR1", rand.nextInt(4)-1);
+//		Knowledge.setSensorState("SENSOR2", rand.nextInt(4)-1);
+//		Knowledge.setSensorState("SENSOR3", rand.nextInt(4)-1);	
+//		Knowledge.setSensorState("SENSOR3", rand.nextInt(4)-1);
+		
 	}	
 
 }
