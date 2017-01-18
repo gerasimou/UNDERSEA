@@ -60,7 +60,7 @@ if [ ${REMOVE} = "yes" ]; then
 
 	rm -f    .LastOpenedMOOSLogDirectory
 	rm -rf  $VERBOSE MOOSLog_*  LOG_*
-	rm -rf  $VERBOSE *~ targ_* *.moos++ log
+	rm -rf  $VERBOSE *~ targ_* *.moos++ log *SENSOR*.moos *UUV*.moos
 	rm -f logfile/*
 
 	cd $INVOCATION_ABS_DIR

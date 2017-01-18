@@ -7,7 +7,7 @@ Simulator =  true
 Community = nautilus
 LatOrigin  = 43.825300
 LongOrigin = -70.330400
-MOOSTimeWarp = 10
+MOOSTimeWarp = 2
 
 //------------------------------------------
 // Antler configuration  block

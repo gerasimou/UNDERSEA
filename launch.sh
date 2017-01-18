@@ -66,7 +66,7 @@ sleep 3
 cd $INVOCATION_ABS_DIR/$CONTROLLER_DIR
 
 #start controller
-java -jar target/UUV_Controller-jar-with-dependencies.jar
+time java -jar target/UUV_Controller-jar-with-dependencies.jar
 EXIT_VALUE=$?
 
 if [[ $EXIT_VALUE -eq 1 ]]; then
