@@ -1,7 +1,7 @@
 package controllerPMC.prism;
 
 //class that represents a data structure for storing an RQVResult
-public class RQVResult{
+public class PMCResult{
 	int 	sensor1;
 	int		sensor2;
 	int		sensor3;
@@ -9,7 +9,7 @@ public class RQVResult{
 	double 	req1Result; // expected number of accurate measurements
 	double 	req2Result; // expected power consumption
 	
-	public RQVResult(){
+	public PMCResult(){
 		sensor1 	= -1;
 		sensor2 	= -1;
 		sensor3		= -1;
@@ -18,7 +18,7 @@ public class RQVResult{
 		req2Result 	= -1;
 	}
 	
-	public RQVResult (int CSC, double speed, double req1Result, double req2Result){
+	public PMCResult (int CSC, double speed, double req1Result, double req2Result){
 		this.sensor1 	= CSC%2;
 		this.sensor2 	= CSC%4>1 ? 1 : 0;
 		this.sensor3 	= CSC%8>3 ? 1 : 0;
