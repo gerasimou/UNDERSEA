@@ -22,6 +22,8 @@ ProcessConfig = ANTLER
 	   Run = pMarinePID		@ NewConsole = false
 	   Run = pMarineViewer	@ NewConsole = false
 
+	    Run = uTimerScript 	@ NewConsole = false
+
 	   Run = pHelmIvP			@ NewConsole = false
 
 	   Run = sUUV				@ NewConsole = false ~nautilus
@@ -33,6 +35,7 @@ ProcessConfig = ANTLER
 
 #include plug_uProcessWatch.moos
 #include plug_uSimMarine.moos
+#include plug_uTimerScript.moos
 #include plug_pNodeReporter.moos
 #include plug_pMarinePID.moos
 #include plug_pMarineViewer.moos

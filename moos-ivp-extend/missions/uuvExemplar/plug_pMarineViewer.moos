@@ -9,9 +9,9 @@ ProcessConfig = pMarineViewer
   TIFF_FILE            = forrest19.tif
 
   //Backview
-  set_pan_x            = -90
-  set_pan_y            = -280
-  zoom                 = 0.6
+  set_pan_x            = -150
+  set_pan_y            = -80
+  zoom                 = 0.5
   hash_delta           = 50
   hash_shade           = 0.4
   hash_viewable        = false
@@ -26,7 +26,7 @@ ProcessConfig = pMarineViewer
   trails_viewable         = false
 
   // Appcast configuration
-  appcast_height       = 70
+  appcast_height       = 80
   appcast_width        = 30
   appcast_viewable     = true
   appcast_color_scheme = indigo
