@@ -60,23 +60,38 @@ class UUV : public AppCastingMOOSApp
 		   			return str;
 		   	   }
 
-		   	   void newReading()
+		   	   std::string getSummary()
+		   	   {
+		   		    std::string str = name +":"+ doubleToString(averageRate,2)
+		   		    					   +":"+ intToString(numOfReadings)
+										   +":"+ intToString(numOfSuccReadings)
+										   +":"+ intToString(state);
+		   			return str;
+		   	   }
+
+
+		   	   void newReading(double value)
 		   	   {
 		   		   numOfReadings += 1;
 		   		   averageRate	  = numOfReadings / (MOOSTime(true) - time);
+		   		   if (value == 1){
+		   			   numOfSuccReadings++;
+		   		   }
 		   	   }
 
 		   	   void reset()
 		   	   {
-		   		   numOfReadings	= 0;
-				   averageRate  	= 0;
-				   state			= -1;
-				   time				= MOOSTime(true);
+		   		   numOfReadings		= 0;
+		   		   numOfSuccReadings	= 0;
+				   averageRate  		= 0;
+				   state				= -1;
+				   time					= MOOSTime(true);
 		   	   }
 
 		   public:
 			   std::string name;
 			   int numOfReadings;
+			   int numOfSuccReadings;
 			   double averageRate;
 			   int state;
 			   double time;

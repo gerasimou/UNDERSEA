@@ -148,25 +148,27 @@ bool Sensor::Iterate()
 	//do stuff here
 	m_iterations++;
 
+	double successfulReading = ((rand() % 100 + 1)/100.0) < m_reliability ? 1.0 : 0.0;
+
 	double currentTime = MOOSTime(true)-GetAppStartTime();
 	if (event_index < m_degradations.size()){
 
 		Degradation deg    = m_degradations.at(event_index);
 		if ( (currentTime >= deg.getStartTime()) && (currentTime <= deg.getFinishTime()) ){
-			Notify(m_sensor_name, doubleToString(currentTime,3) + "\t DOWN");
+			Notify(m_sensor_name, successfulReading); //doubleToString(currentTime,3) + "\t DOWN");
 			SetAppFreq(deg.getDegradation(),deg.getDegradation());
 		}
 		else if (currentTime > deg.getFinishTime()){
 			event_index++;
-			Notify(m_sensor_name, doubleToString(currentTime,3) + "\t Recovered");
+			Notify(m_sensor_name, successfulReading); //doubleToString(currentTime,3) + "\t Recovered");
 			SetAppFreq(m_nominal_rate, m_nominal_rate);
 		}
 		else{
-			Notify(m_sensor_name, doubleToString(currentTime,3) + "\t OK");
+			Notify(m_sensor_name, successfulReading); //doubleToString(currentTime,3) + "\t OK");
 		}
 	}
 	else
-		Notify(m_sensor_name, doubleToString(currentTime,3) + "\t OK");
+		Notify(m_sensor_name, successfulReading); //doubleToString(currentTime,3) + "\t OK");
 
 	reportEvent(doubleToString(currentTime,3) + "\t READING");
 

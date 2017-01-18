@@ -143,8 +143,11 @@ bool UUV::OnNewMail(MOOSMSG_LIST &NewMail)
 		#endif
 
 		string key   = msg.GetKey();
+		double value  = msg.GetDouble();
 		if (find(m_uuv_sensors.begin(), m_uuv_sensors.end(), key) != m_uuv_sensors.end()){
-			m_sensors_map[key].newReading();
+
+			m_sensors_map[key].newReading(value);
+			Utilities::writeToFile("test.txt", doubleToString(value,2));
 		}
 	}
 
@@ -245,12 +248,13 @@ void UUV::initSensorsMap()
 {
 	for (vector<string>::iterator it = m_uuv_sensors.begin();  it != m_uuv_sensors.end(); it++){
 		Sensor newSensor;
-		newSensor.name		 	= *it;
-		newSensor.averageRate 	= 0;
-		newSensor.numOfReadings = 0;
-		newSensor.state			= -1;
-		newSensor.time			= MOOSTime(true);
-		m_sensors_map[*it] = newSensor;
+		newSensor.name		 		= *it;
+		newSensor.averageRate 		= 0;
+		newSensor.numOfReadings 	= 0;
+		newSensor.numOfSuccReadings	= 0;
+		newSensor.state				= -1;
+		newSensor.time				= MOOSTime(true);
+		m_sensors_map[*it] 			= newSensor;
 	}
 }
 

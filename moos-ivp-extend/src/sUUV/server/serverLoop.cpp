@@ -154,7 +154,8 @@ void *runServer2 (void *m_sensors_map)
 		 else if (strcmp(buffer,"SENSORS") == 0){
 			outputStr.clear();
 			for (UUV::sensorsMap::iterator it = sensMap->begin();  it != sensMap->end(); it++){
-				outputStr += it->first +"="+ doubleToString(it->second.averageRate,2) +",";
+//				outputStr += it->first +"="+ doubleToString(it->second.averageRate,2) +",";
+				outputStr += it->second.getSummary() +",";
 				//reset sensors information
 				it->second.reset();
 			}
