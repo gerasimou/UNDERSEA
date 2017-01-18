@@ -27,12 +27,24 @@ public class Sensor {
 	protected void run (){
 		try {
 			reply = client.write(command); 
+			parseReply(reply);
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 			reply = "ERROR";
 		}
 	}	
+	
+	
+	private void parseReply (String reply){
+		//SENSOR1=2.49,SENSOR2=2.14,SENSOR3=1.96,SENSOR4=1.78
+		String[] sensorsStr = reply.split(",");
+		
+		for (String str : sensorsStr){
+			String[] sensorData = str.split("=");
+			Knowledge.setSensorRate(sensorData[0], Double.parseDouble(sensorData[1]));
+		}
+	}
 	
 	
 	public String getReply(){

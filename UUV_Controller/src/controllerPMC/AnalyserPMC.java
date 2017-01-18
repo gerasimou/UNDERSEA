@@ -4,8 +4,9 @@ import java.util.List;
 
 import auxiliary.Utility;
 import controller.Analyser;
+import controller.Knowledge;
+import controllerPMC.prism.PMCResult;
 import controllerPMC.prism.PrismAPI;
-import controllerPMC.prism.RQVResult;
 
 public class AnalyserPMC extends Analyser {
 
@@ -24,8 +25,8 @@ public class AnalyserPMC extends Analyser {
     /** output file */
     String fileName;
     
-    /** Structure that keeps the result after RQV (i.e., reliability, cost, and response time) */
-    private RQVResult RQVResultsArray[];    
+//    /** Structure that keeps the result after RQV (i.e., reliability, cost, and response time) */
+//    private PMCResult PMCResultsArray[];    
     
     /** System characteristics*/
     private final int NUM_OF_SENSORS		;
@@ -52,7 +53,6 @@ public class AnalyserPMC extends Analyser {
 			//initialise PRISM instance
 			this.prism = new PrismAPI();
 			prism.setPropertiesFile(propertiesFileName);
-
 		
 			//Read the model
 			this.modelAsString = Utility.readFile(modelFileName);		
@@ -61,7 +61,7 @@ public class AnalyserPMC extends Analyser {
 			this.fileName = Utility.getProperty("RQV_OUTPUT_FILE");		    
 		    
 			//init structure for storing QV results
-			this.RQVResultsArray = new RQVResult[NUM_OF_CONFIGURATIONS];
+//			this.PMCResultsArray = new PMCResult[NUM_OF_CONFIGURATIONS];
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -75,8 +75,8 @@ public class AnalyserPMC extends Analyser {
      * @param parameters
      */
 	public void  run(){
-		Object[] parameters = null;
-		
+		System.out.println("Running analyser");
+				
 		//For all configurations run QV and populate RQVResultArray
 		for (int CSC=1; CSC<NUM_OF_SENSOR_CONFIGS; CSC++){
 			for (int s=20; s<=40; s++){
@@ -84,13 +84,13 @@ public class AnalyserPMC extends Analyser {
 				int index 	= ((CSC-1)*21)+(s-20);
 
 				Object[] arguments = new Object[9]; 
-				arguments[0]	= parameters[0];
-				arguments[1]	= parameters[1];
-				arguments[2]	= parameters[2];
+				arguments[0]	= Knowledge.getSensorRate("SENSOR1");
+				arguments[1]	= Knowledge.getSensorRate("SENSOR2");
+				arguments[2]	= Knowledge.getSensorRate("SENSOR3");
 				arguments[3]	= estimateP(s/10.0, 5);
 				arguments[4]	= estimateP(s/10.0, 7);
 				arguments[5]	= estimateP(s/10.0, 11);
-				arguments[6]	= parameters[3];
+				arguments[6]	= 1;//parameters[3];
 				arguments[7]	= CSC;
 				arguments[8]	= s/10.0;
 				
@@ -107,7 +107,8 @@ public class AnalyserPMC extends Analyser {
 				double req2result 			= prismResult.get(1);
 				
 				//4) store configuration results
-				RQVResultsArray[index] = new RQVResult(CSC, s/10.0, req1result, req2result);
+				Knowledge.addResult(index, new PMCResult(CSC, s/10.0, req1result, req2result));
+//				PMCResultsArray[index] = new PMCResult(CSC, s/10.0, req1result, req2result);
 			}
 		}
 		

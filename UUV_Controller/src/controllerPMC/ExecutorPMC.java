@@ -1,29 +1,28 @@
 package controllerPMC;
 
-import java.util.Random;
 import controller.Executor;
+import controller.Knowledge;
 
 public class ExecutorPMC extends Executor {
 
+	String command;
+	
 	public ExecutorPMC() {
 	}
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void run () {
+		String sp = "SPEED="   + (Knowledge.getUUVspeed());
+		String s1 = "SENSOR1=" + (Knowledge.getSensorState("SENSOR1"));
+		String s2 = "SENSOR2=" + (Knowledge.getSensorState("SENSOR2"));
+		String s3 = "SENSOR3=" + (Knowledge.getSensorState("SENSOR3"));
+		command = sp +","+ s1 +","+ s2 +","+ s3;
+//		System.out.println(command);
+	}	
 
+	
 	@Override
 	public String getCommand() {
-		Random rand = new Random(System.currentTimeMillis());
-
-		String sp = "SPEED="   + (rand.nextDouble()+3);
-		String s1 = "SENSOR1=" + (rand.nextInt(4)-1);
-		String s2 = "SENSOR2=" + (rand.nextInt(4)-1);
-		String s3 = "SENSOR3=" + (rand.nextInt(4)-1);
-		String command = sp +","+ s1 +","+ s2 +","+ s3;
-		
 		return command;
 	}	
 
