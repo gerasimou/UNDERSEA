@@ -33,12 +33,6 @@ public class Controller extends TimerTask{
 	private String host;//	= "localhost";
 	private int port;// 		= 8888;
 	
-    /** Time window for invoking the uuv*/
-    private long TIME_WINDOW;
-    
-    /** Simulation time*/
-    private long SIMULATION_TIME;
-    
     /** Simulation speed*/
     private static long SIMULATION_SPEED;
 
@@ -65,12 +59,6 @@ public class Controller extends TimerTask{
 		    this.planner	= planner;
 		    this.executor	= executor;
 		    
-			//init time window
-			TIME_WINDOW = Math.round(Double.parseDouble(Utility.getProperty("TIME_WINDOW")) * 1000);
-			
-			//init sumulation time
-			SIMULATION_TIME = Math.round(Double.parseDouble(Utility.getProperty("SIMULATION_TIME")) * 1000);
-			
 			//init simulation speed
 			SIMULATION_SPEED = Math.round(Double.parseDouble(Utility.getProperty("SIMULATION_SPEED")));
 	    }
@@ -83,10 +71,15 @@ public class Controller extends TimerTask{
 	/**
 	 * start the controller
 	 */
-	public void run(){			
+	public void run(){
+		double initTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED;
+		Knowledge.addToInitTimeList(initTime);
+		System.out.println(initTime +"\tRequested UUV state");
+		
 		sensor.run();
-		System.out.println((System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED 
-							+"\tSending:\t"+ sensor.getReply());				
+		double sensorTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED ; 
+		System.out.println(sensorTime +"\tReceived:\t"+ sensor.getReply());				
+		
 		monitor.run();
 		
 		analyser.run();
@@ -95,10 +88,15 @@ public class Controller extends TimerTask{
 		
 		executor.run();
 		
+		double controllerTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED ; 
+		System.out.println(controllerTime +"\tNew config:\t" + executor.getCommand());
+
 		effector.setCommand(executor.getCommand());
 		effector.run();
-		System.out.println((System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED 
-							+"\tReceived:\t"+ effector.getReply() +"\n");					
+		
+		double endTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED ;
+		System.out.println(endTime +"\tApplied?\t"+ effector.getReply() +"\n");
+		Knowledge.addToEndTimeList(endTime);
 	}
 	
 	
@@ -118,41 +116,4 @@ public class Controller extends TimerTask{
 				System.out.println("Something was wrong with terminating comms!");
 		}
 	}
-	
-	
-	
-	/**
-	 * start the controller
-	 */
-	@Deprecated
-	public void run2(){
-//		long previousInvocation = System.currentTimeMillis();
-//		
-//		long now, start=previousInvocation;
-//				
-//		do{
-//			now = System.currentTimeMillis();
-//			if (now - previousInvocation > (TIME_WINDOW)){
-//				previousInvocation = now;
-//				
-//				sensor.run();
-//				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tSending:\t"+ sensor.getReply());
-//				
-//				monitor.run();
-//				
-//				analyser.run();
-//				
-//				planner.run();
-//				
-//				executor.run();
-//				
-//				effector.setCommand(executor.getCommand());
-//				effector.run();
-//				System.out.println((System.currentTimeMillis() - start)/1000.0 +"\tReceived:\t"+ effector.getReply() +"\n");				
-//			}	
-//		}
-//		while (now - start <= SIMULATION_TIME);
-//		shutDown();
-	}
-	
 }

@@ -5,6 +5,7 @@ import java.util.Timer;
 
 import auxiliary.Utility;
 import controller.Controller;
+import controller.Knowledge;
 
 public class ControllerEngine {
 
@@ -45,6 +46,8 @@ public class ControllerEngine {
 				e.printStackTrace();
 				System.exit(0);
 			}
+			
+			Knowledge.logData();
 			System.exit(1);
 		}
 		catch (Exception e) {

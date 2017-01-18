@@ -10,7 +10,7 @@ public class UUV{
 	/** speed*/
 	private double speed;
 	
-	/** speed history*/
+	/** speed history as decided by the controller*/
 	protected List<Double> speedList;
 
 

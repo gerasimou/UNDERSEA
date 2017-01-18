@@ -6,26 +6,20 @@ public class PMCResult{
 	int		sensor2;
 	int		sensor3;
 	double 	speed;
-	double 	req1Result; // expected number of accurate measurements
-	double 	req2Result; // expected power consumption
+	double 	r1; 	// expected number of accurate measurements
+	double 	r2; 	// expected power consumption
+	double  cost;	// cost
 	
-	public PMCResult(){
-		sensor1 	= -1;
-		sensor2 	= -1;
-		sensor3		= -1;
-		speed		= -1;
-		req1Result 	= -1;
-		req2Result 	= -1;
-	}
 	
-	public PMCResult (int CSC, double speed, double req1Result, double req2Result){
+	public PMCResult (int CSC, double speed, double r1Result, double r2Result, double cost){
 		this.sensor1 	= CSC%2;
 		this.sensor2 	= CSC%4>1 ? 1 : 0;
 		this.sensor3 	= CSC%8>3 ? 1 : 0;
 		this.speed   	= speed;
-		this.req1Result	= req1Result;
-		this.req2Result	= req2Result;
+		this.r1			= r1Result;
+		this.r2			= r2Result;
 	}
+	
 	
 	@Override
 	public String toString() {
@@ -34,9 +28,9 @@ public class PMCResult{
 	    str.append("Sensor1:" + sensor1 + NEW_LINE);
 	    str.append("Sensor2:" + sensor2 + NEW_LINE);
 	    str.append("Sensor3:" + sensor3 + NEW_LINE);
-	    str.append("Speed:" + speed + NEW_LINE);
-	    str.append("Req1Result:" + req1Result + NEW_LINE);
-	    str.append("Req2Result:" + req2Result + NEW_LINE);
+	    str.append("Speed:" + speed 	+ NEW_LINE);
+	    str.append("Req1Result:" + r1	+ NEW_LINE);
+	    str.append("Req2Result:" + r2	+ NEW_LINE);
 		return str.toString();
 	}
 	
@@ -57,11 +51,15 @@ public class PMCResult{
 	}
 	
 	public double getReq1Result(){
-		return req1Result;
+		return r1;
 	}
 	
 	public double getReq2Result(){
-		return req2Result;
+		return r2;
+	}
+
+	public double getCost(){
+		return cost;
 	}
 
 

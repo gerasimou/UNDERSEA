@@ -24,27 +24,16 @@ public class AnalyserPMC extends Analyser {
 
     /** output file */
     String fileName;
-    
-//    /** Structure that keeps the result after RQV (i.e., reliability, cost, and response time) */
-//    private PMCResult PMCResultsArray[];    
-    
+        
     /** System characteristics*/
-    private final int NUM_OF_SENSORS		;
-    private final int NUM_OF_SENSOR_CONFIGS	;//possible sensor configurations
-    private final int NUM_OF_SPEED_CONFIGS	; // [0,21], discrete steps
-    private final int NUM_OF_CONFIGURATIONS ;
+    private final int NUM_OF_SENSORS		= Utility.getProperty("SENSORS").split(",").length;
+    private final int NUM_OF_SENSOR_CONFIGS	=  (int) (Math.pow(2,NUM_OF_SENSORS)); //possible sensor configurations
 
     
 	/**
 	 * Constructor
 	 */
 	public AnalyserPMC() {		
-		//init system characteristics 
-	    NUM_OF_SPEED_CONFIGS	= 21; // [0,21], discrete steps
-	    NUM_OF_SENSORS			= 3;
-	    NUM_OF_SENSOR_CONFIGS	= (int) (Math.pow(2,NUM_OF_SENSORS)); //possible sensor configurations
-	    NUM_OF_CONFIGURATIONS	= (NUM_OF_SENSOR_CONFIGS-1) * NUM_OF_SPEED_CONFIGS; //discard configuration in which all sensors are switch off
-
 		try{
 			//Read  model and properties parameters
 			this.modelFileName 		= Utility.getProperty("MODEL_FILE");
@@ -58,10 +47,7 @@ public class AnalyserPMC extends Analyser {
 			this.modelAsString = Utility.readFile(modelFileName);		
 
 			//init the output file
-			this.fileName = Utility.getProperty("RQV_OUTPUT_FILE");		    
-		    
-			//init structure for storing QV results
-//			this.PMCResultsArray = new PMCResult[NUM_OF_CONFIGURATIONS];
+			this.fileName = Utility.getProperty("RQV_OUTPUT_FILE");		    		    
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -76,23 +62,24 @@ public class AnalyserPMC extends Analyser {
      */
 	public void  run(){
 		System.out.println("Running analyser");
-				
+		Knowledge.PMCResultsMap.clear();		
+		
 		//For all configurations run QV and populate RQVResultArray
 		for (int CSC=1; CSC<NUM_OF_SENSOR_CONFIGS; CSC++){
-			for (int s=20; s<=40; s++){
+			for (int sp=10; sp<=40; sp++){
 
-				int index 	= ((CSC-1)*21)+(s-20);
+				int index 	= ((CSC-1)*21)+(sp-20);
 
 				Object[] arguments = new Object[9]; 
 				arguments[0]	= Knowledge.getSensorRate("SENSOR1");
 				arguments[1]	= Knowledge.getSensorRate("SENSOR2");
 				arguments[2]	= Knowledge.getSensorRate("SENSOR3");
-				arguments[3]	= estimateP(s/10.0, 5);
-				arguments[4]	= estimateP(s/10.0, 7);
-				arguments[5]	= estimateP(s/10.0, 11);
+				arguments[3]	= estimateP(sp/10.0, 5);
+				arguments[4]	= estimateP(sp/10.0, 7);
+				arguments[5]	= estimateP(sp/10.0, 11);
 				arguments[6]	= 1;//parameters[3];
 				arguments[7]	= CSC;
-				arguments[8]	= s/10.0;
+				arguments[8]	= sp/10.0;
 				
 				
 				//1) Instantiate parametric stochastic model								
@@ -105,15 +92,12 @@ public class AnalyserPMC extends Analyser {
 				List<Double> prismResult 	= prism.runPrism();
 				double req1result 			= prismResult.get(0);
 				double req2result 			= prismResult.get(1);
+				double cost					= 1 * req2result + 20/(sp/10);
 				
 				//4) store configuration results
-				Knowledge.addResult(index, new PMCResult(CSC, s/10.0, req1result, req2result));
-//				PMCResultsArray[index] = new PMCResult(CSC, s/10.0, req1result, req2result);
+				Knowledge.addResult(index, new PMCResult(CSC, sp/10.0, req1result, req2result, cost));
 			}
-		}
-		
-		//return RQVResult for all configurations
-//		return RQVResultsArray;
+		}		
 		
 	}
 

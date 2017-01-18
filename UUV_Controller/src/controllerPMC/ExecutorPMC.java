@@ -12,6 +12,7 @@ public class ExecutorPMC extends Executor {
 
 	@Override
 	public void run () {
+		//construct command
 		String sp = "SPEED="   + (Knowledge.getUUVspeed());
 		String s1 = "SENSOR1=" + (Knowledge.getSensorState("SENSOR1"));
 		String s2 = "SENSOR2=" + (Knowledge.getSensorState("SENSOR2"));

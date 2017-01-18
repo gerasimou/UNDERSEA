@@ -37,12 +37,25 @@ public class Sensor {
 	
 	
 	private void parseReply (String reply){
-		//SENSOR1=2.49,SENSOR2=2.14,SENSOR3=1.96,SENSOR4=1.78
-		String[] sensorsStr = reply.split(",");
+		//SENSOR1:RATE:#READINGS:#SUCC_READINGS,SENSOR2:RATE:#READINGS:#SUCC_READINGS,...
+		String[] sensorsStr = reply.split(",");//multiple SENSOR1=RATE:#READINGS:#SUCC_READINGS
 		
 		for (String str : sensorsStr){
-			String[] sensorData = str.split("=");
-			Knowledge.setSensorRate(sensorData[0], Double.parseDouble(sensorData[1]));
+			String[] sensorData = str.split(":");
+			//sensorData[0] --> sensor name
+			//sensorData[1] --> sensor average reading rate
+			//sensorData[2] --> readings since previous invocation
+			//sensorData[3] --> accurate readings since previous invocation
+			
+			//sensor rate cannot be zero --> use a very small value 
+			double rate = Double.parseDouble(sensorData[1]);
+			if (rate == 0)
+				rate =0.2;
+				
+			Knowledge.setSensorRate(sensorData[0], rate);
+			Knowledge.setSensorReadings(sensorData[0], Integer.parseInt(sensorData[2]));
+			Knowledge.setSensorAccurateReadings(sensorData[0], Integer.parseInt(sensorData[3]));
+			
 		}
 	}
 	
