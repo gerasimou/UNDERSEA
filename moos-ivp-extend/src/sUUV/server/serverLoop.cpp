@@ -13,6 +13,8 @@
 
 #include "serverLoop.h"
 
+#include "../Utilities.h"
+
 using namespace std;
 
 
@@ -155,7 +157,11 @@ void *runServer2 (void *m_sensors_map)
 			outputStr.clear();
 			for (UUV::sensorsMap::iterator it = sensMap->begin();  it != sensMap->end(); it++){
 //				outputStr += it->first +"="+ doubleToString(it->second.averageRate,2) +",";
-				outputStr += it->second.getSummary() +",";
+
+				//if it's not the dummy element that resembles the speed in sensors map
+				if (it->first.find("SPEED")== string::npos){
+					outputStr += it->second.getSummary() +",";
+				}
 				//reset sensors information
 				it->second.reset();
 			}
@@ -187,9 +193,17 @@ void *runServer2 (void *m_sensors_map)
 				 }
 				 free(dup2);
 				 if (v.size()==2){
-					 UUV::sensorsMap::iterator it = sensMap->find(v.at(0));
-					 if (it != sensMap->end()){
-						 it->second.state = stoi(v.at(1));
+					 if (v.at(0).find("SPEED")!= string::npos){//SPEED=3.22
+						 UUV::sensorsMap::iterator it = sensMap->find(v.at(0));
+						 if (it != sensMap->end()){
+							 it->second.other = stod(v.at(1));
+						 }
+					 }
+					 else if (v.at(0).find("SENSOR")!= string::npos){
+						 UUV::sensorsMap::iterator it = sensMap->find(v.at(0));
+						 if (it != sensMap->end()){
+							 it->second.state = stod(v.at(1));
+						 }
 					 }
 				 }
 			 }

@@ -49,6 +49,8 @@ class UUV : public AppCastingMOOSApp
 	   double m_app_start_time;
 	   double m_current_iterate;
 	   double m_previous_iterate;
+	   double m_uuv_speed;
+
 
 	 public:
 	   struct Sensor{
@@ -84,7 +86,6 @@ class UUV : public AppCastingMOOSApp
 		   		   numOfReadings		= 0;
 		   		   numOfSuccReadings	= 0;
 				   averageRate  		= 0;
-				   state				= -1;
 				   time					= MOOSTime(true);
 		   	   }
 
@@ -95,11 +96,13 @@ class UUV : public AppCastingMOOSApp
 			   double averageRate;
 			   int state;
 			   double time;
+			   double other;
 
 	   };
 	   typedef std::map<std::string, Sensor> sensorsMap;
 
 	   sensorsMap m_sensors_map;
+
 
 };
 

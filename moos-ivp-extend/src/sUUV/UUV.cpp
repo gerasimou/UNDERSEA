@@ -28,6 +28,8 @@ UUV::UUV()
 	M_TIME_WINDOW 			= 10;
 
 	PORT 					= 8888;
+
+	m_uuv_speed				= 4;
 }
 
 
@@ -147,7 +149,6 @@ bool UUV::OnNewMail(MOOSMSG_LIST &NewMail)
 		if (find(m_uuv_sensors.begin(), m_uuv_sensors.end(), key) != m_uuv_sensors.end()){
 
 			m_sensors_map[key].newReading(value);
-			Utilities::writeToFile("test.txt", doubleToString(value,2));
 		}
 	}
 
@@ -254,8 +255,21 @@ void UUV::initSensorsMap()
 		newSensor.numOfSuccReadings	= 0;
 		newSensor.state				= -1;
 		newSensor.time				= MOOSTime(true);
+		newSensor.other				= 0;
 		m_sensors_map[*it] 			= newSensor;
 	}
+
+	//Dummy workaround for getting the speed value from controller
+	//have a sensor element in sensor map with SPEED name. time is the speed value
+	Sensor newSensor;
+	newSensor.name		 		= "SPEED";
+	newSensor.averageRate 		= 0;
+	newSensor.numOfReadings 	= 0;
+	newSensor.numOfSuccReadings	= 0;
+	newSensor.state				= -1;
+	newSensor.time				= 0;
+	newSensor.other				= m_uuv_speed;
+	m_sensors_map["SPEED"] 		= newSensor;
 }
 
 
@@ -285,35 +299,40 @@ void UUV::sendNotifications()
 
 	int index=0;
 	for (sensorsMap::iterator it = m_sensors_map.begin();  it != m_sensors_map.end(); it++){
-		int xPosition = xStartPosition + index*50;
-		index++;
+		 if (it->first !=  "SPEED"){
 
-		string sensorColor = "";
-		switch (it->second.state){
-			case -1: {
-				sensorColor = "red";
-						break;
-			}
-			case 0: {
-						sensorColor = "white";
-						break;
-			}
-			case 1: {
-						sensorColor = "orange";
-						break;
-			}
-			case 2: {
-						sensorColor = "green";
-						break;
-			}
-		}
+			int xPosition = xStartPosition + index*50;
+			index++;
 
-		Notify("VIEW_MARKER", "type=circle,x=" + intToString(xPosition) +",y=-50,scale=2,label=" + it->first +",color=" + sensorColor + ",width=12");
+			string sensorColor = "";
+			switch (it->second.state){
+				case -1: {
+					sensorColor = "red";
+							break;
+				}
+				case 0: {
+							sensorColor = "white";
+							break;
+				}
+				case 1: {
+							sensorColor = "green";
+							break;
+				}
+				case 2: {
+							sensorColor = "orange";
+							break;
+				}
+			}
+
+			Notify("VIEW_MARKER", "type=circle,x=" + intToString(xPosition) +",y=-50,scale=2,label=" + it->first +",color=" + sensorColor + ",width=12");
+			Notify("VIEW_MARKER", "type=circle,x=" + intToString(xPosition) +",y=-70,scale=2,msg=avg.rate:"+ doubleToString(it->second.averageRate,2)+ ",label="+it->first+"1,color=darkblue,width=1");
+		 }
 	}
 
-	//set desired speed
-//	double m_desired_speed = 0;
-//	Notify("UPDATES_BHV_CONSTANT_SPEED", "speed="+doubleToString(m_desired_speed));
+	//sent speed notification
+	m_uuv_speed = m_sensors_map["SPEED"].other;
+	Notify("UPDATES_CONSTANT_SPEED", "speed="+doubleToString(m_uuv_speed));
+	Notify("VIEW_MARKER", "type=circle,x=" + intToString(xMiddlePosition) +",y=-85,scale=2,msg=speed:"+ doubleToString(m_uuv_speed,2)+ ",label=speed,color=darkblue,width=1");
 
 
 }
