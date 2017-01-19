@@ -9,7 +9,7 @@ KILLALL="no"
 REMOVE="no"
 function killAll {
 	# processesShoreside=("pAntler" "MOOSDB" "uProcessWatch" "uTimerScript" "pHostInfo" "pShare" "uFldShoreBroker" "uFldNodeComms" pMarineViewer)
-	processesVehicle=(MOOSDB uProcessWatch uSimMarine pNodeReporter pMarinePID pHelmIvP sSensor sUUV pMarineViewer pAntler)
+	processesVehicle=(MOOSDB uProcessWatch uSimMarine pNodeReporter pMarinePID pHelmIvP sSensor sUUV pMarineViewer pAntler uTimerScript)
 	#printf "Shoreside:\t"
 	for i in ${processesShoreside[@]}; do
 		printf "%s\t" ${i}

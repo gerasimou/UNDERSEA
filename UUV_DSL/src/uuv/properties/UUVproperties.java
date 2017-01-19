@@ -144,6 +144,9 @@ public class UUVproperties {
 		//generate target vehicle block
 		generateTargetVehicleBlock();
 		
+		//generate target vehicle block
+		generateIvPHelmBlock();
+		
 		//generate controller properties
 		generateControllerProperties();
 	}
@@ -175,6 +178,8 @@ public class UUVproperties {
 		str.append("\t   Run = pMarinePID		@ NewConsole = false\n");
 		str.append("\t   Run = pMarineViewer	@ NewConsole = false\n\n");
 		
+		str.append("\t    Run = uTimerScript 	@ NewConsole = false\n\n");
+		
 		str.append("\t   Run = pHelmIvP			@ NewConsole = false\n\n");
 		
 		str.append("\t   Run = sUUV				@ NewConsole = false ~" + uuv.name +"\n");
@@ -186,6 +191,7 @@ public class UUVproperties {
 
 		str.append("#include plug_uProcessWatch.moos\n");
 		str.append("#include plug_uSimMarine.moos\n");
+		str.append("#include plug_uTimerScript.moos\n");
 		str.append("#include plug_pNodeReporter.moos\n");
 		str.append("#include plug_pMarinePID.moos\n");
 		str.append("#include plug_pMarineViewer.moos\n");
@@ -202,6 +208,34 @@ public class UUVproperties {
 		Utility.exportToFile(ParserEngine.missionDir +"/meta_vehicle.moos", str.toString(), false);
 
 	}
+	
+	
+	private void generateIvPHelmBlock(){
+		StringBuilder str = new StringBuilder();
+		str.append("//------------------------------------------\n");
+		str.append("// Helm IvP configuration  block\n");
+		str.append("//------------------------------------------\n");
+		str.append("ProcessConfig = pHelmIvP\n");
+		str.append("{\n");
+		str.append("\t   AppTick    = 4\n");
+		str.append("\t   CommsTick  = 4\n");
+		str.append("\t   Behaviors  = targ_uuv.bhv\n");
+		str.append("\t   Verbose    = quiet\n");
+		str.append("\t   ok_skew = any\n");
+		str.append("\t   active_start = false\n");
+
+		str.append("\t   Domain     = course:0:359:360\n");
+		str.append("\t   Domain     = depth:0:100:101\n");
+		str.append("\t   Domain     = speed:" + uuv.getSpeedMin() +":"+ uuv.getSpeedMax() +":"+ uuv.getSpeedSteps() +"\n");
+		
+		str.append("}\n\n");
+		
+		
+		//write
+		Utility.exportToFile(ParserEngine.missionDir +"/plug_pHelmIvP.moos", str.toString(), false);
+
+	}
+	
 	
 	
 	private void generateControllerProperties(){
@@ -224,6 +258,18 @@ public class UUVproperties {
 			properties.put("SIMULATION_TIME", simulationTime);
 			properties.put("SIMULATION_SPEED", simulationSpeed);
 			properties.put("PORT", uuv.port);
+
+			String sensorsNames = "";
+			Iterator<String> it = sensorsMap.keySet().iterator();
+			while (it.hasNext()){
+				sensorsNames += it.next();
+				if (it.hasNext())
+					sensorsNames += ",";
+			}
+			properties.put("SENSORS", sensorsNames);
+
+			properties.put("SPEED", uuv.getSpeedMin() +","+ uuv.getSpeedMax() +","+ uuv.getSpeedSteps());
+
 			
 			FileOutputStream out = new FileOutputStream(propertiesFile);
 			properties.store(out, null);

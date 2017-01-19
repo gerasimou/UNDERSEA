@@ -65,9 +65,13 @@ sleep 3
 #go to initial directory & then to controller's directory
 cd $INVOCATION_ABS_DIR/$CONTROLLER_DIR
 
+#/bin/bash .$INVOCATION_ABS_DIR/memoryMonitor.sh &
+
 #start controller
-time java -jar target/UUV_Controller-jar-with-dependencies.jar
+(time java -jar target/UUV_Controller-jar-with-dependencies.jar) 2> CPU.txt
 EXIT_VALUE=$?
+
+mv CPU.txt "CPU_`data`.txt"
 
 if [[ $EXIT_VALUE -eq 1 ]]; then
   cd $INVOCATION_ABS_DIR

@@ -54,6 +54,9 @@ cd $MISSION_DIR
 #create mission
 nsplug meta_vehicle.moos targ_uuv.moos
 
+#create behaviour
+nsplug meta_vehicle.bhv targ_uuv.bhv
+
 cd $INVOCATION_ABS_DIR
 
 
