@@ -3,7 +3,7 @@ package uuv.dsl;
 import auxiliary.DSLException;
 import uuv.dsl.gen.UUVBaseListener;
 import uuv.dsl.gen.UUVParser;
-import uuv.dsl.gen.UUVParser.DegradationContext;
+import uuv.dsl.gen.UUVParser.ChangeContext;
 import uuv.properties.UUVproperties;
 
 public class UUVListener extends UUVBaseListener {
@@ -93,12 +93,12 @@ public class UUVListener extends UUVBaseListener {
 		
 			properties.setSensor(name, rate, reliability);
 		
-			for (DegradationContext d : ctx.degradation()){
+			for (ChangeContext d : ctx.change()){
 				double begin		= Double.parseDouble(d.begin.getText());
 				double end 			= Double.parseDouble(d.end.getText());
 				double percentage 	= Double.parseDouble(d.value.getText());
 				
-				properties.setDegradation(name, begin, end, percentage);
+				properties.setChange(name, begin, end, percentage);
 				
 			}
 		

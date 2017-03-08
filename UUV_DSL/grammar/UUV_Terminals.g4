@@ -40,8 +40,8 @@ RATE:
 	'rate'
 ;
 
-DEGRADATION:
-	'degradation'
+CHANGE:
+	'change'
 ;
 
 RELIABILITY:

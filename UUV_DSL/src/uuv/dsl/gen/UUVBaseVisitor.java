@@ -1,4 +1,4 @@
-// Generated from UUV.g4 by ANTLR 4.5
+// Generated from grammar/UUV.g4 by ANTLR 4.5
 
   package uuv.dsl.gen;
   import java.util.*; 
@@ -77,5 +77,5 @@ public class UUVBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements UU
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDegradation(UUVParser.DegradationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitChange(UUVParser.ChangeContext ctx) { return visitChildren(ctx); }
 }

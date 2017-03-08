@@ -63,11 +63,11 @@ sensor:
 				NAME 		ASSIGN name=ID
 			|	RATE 		ASSIGN rate=(INT | DOUBLE)
 			|	RELIABILITY	ASSIGN reliability=(INT | DOUBLE)
-			|	degradation+
+			|	change+
 			)+	
 		'}' 
 ;
 
-degradation:
-		DEGRADATION	ASSIGN begin=(INT | DOUBLE) ':' end=(INT | DOUBLE) ':' value=(INT | DOUBLE)
+change:
+		CHANGE	ASSIGN begin=(INT | DOUBLE) ':' end=(INT | DOUBLE) ':' value=(INT | DOUBLE)
 ;

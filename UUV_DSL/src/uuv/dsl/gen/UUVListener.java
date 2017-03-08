@@ -1,4 +1,4 @@
-// Generated from UUV.g4 by ANTLR 4.5
+// Generated from grammar/UUV.g4 by ANTLR 4.5
 
   package uuv.dsl.gen;
   import java.util.*; 
@@ -92,13 +92,13 @@ public interface UUVListener extends ParseTreeListener {
 	 */
 	void exitSensor(UUVParser.SensorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link UUVParser#degradation}.
+	 * Enter a parse tree produced by {@link UUVParser#change}.
 	 * @param ctx the parse tree
 	 */
-	void enterDegradation(UUVParser.DegradationContext ctx);
+	void enterChange(UUVParser.ChangeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link UUVParser#degradation}.
+	 * Exit a parse tree produced by {@link UUVParser#change}.
 	 * @param ctx the parse tree
 	 */
-	void exitDegradation(UUVParser.DegradationContext ctx);
+	void exitChange(UUVParser.ChangeContext ctx);
 }

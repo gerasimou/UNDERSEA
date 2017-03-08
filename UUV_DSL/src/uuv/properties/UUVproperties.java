@@ -123,11 +123,11 @@ public class UUVproperties {
 	}
 
 	
-	public void setDegradation(String sensorName, double begin, double end, double percentage) throws DSLException{
+	public void setChange(String sensorName, double begin, double end, double percentage) throws DSLException{
 //		if (sensorsMap.containsKey(name))
 //			throw new DSLException("Sensor "+ name + "properties already defined. Block Ignored!");
-		Range newDegradation = new Range (begin, end, percentage);
-		sensorsMap.get(sensorName).addDegradation(newDegradation);
+		Range newChange = new Range (begin, end, percentage);
+		sensorsMap.get(sensorName).addChange(newChange);
 	}
 
 	
@@ -144,7 +144,7 @@ public class UUVproperties {
 		//generate target vehicle block
 		generateTargetVehicleBlock();
 		
-		//generate target vehicle block
+		//generate IvPHelm vehicle block
 		generateIvPHelmBlock();
 		
 		//generate controller properties
@@ -301,7 +301,7 @@ public class UUVproperties {
 		public UUV(String name, String port, double min, double max, int steps){
 			this.name			= name;
 			this.port			= port;
-			this.speedRange		= new Range (min, max, steps);
+			this.speedRange		= new Range (min, max, steps+1);
 			this.rate			= "4";
 		}
 		
@@ -371,20 +371,20 @@ public class UUVproperties {
 		/** reliability*/
 		private double reliability;
 
-		/** degradation list*/
-		private List<Range> degradationsList;
+		/** changes list*/
+		private List<Range> changesList;
 		
 
 		public Sensor(String name, double rate, double reliability){
 			this.name				= name;
 			this.rate				= rate;
 			this.reliability		= reliability;
-			this.degradationsList	= new ArrayList<Range>();
+			this.changesList	= new ArrayList<Range>();
 		}
 		
 		
-		protected void addDegradation(Range degradation){
-			degradationsList.add(degradation);
+		protected void addChange(Range change){
+			changesList.add(change);
 		}
 
 		
@@ -415,8 +415,8 @@ public class UUVproperties {
 			str.append("\t MAX_APPCAST_EVENTS = 25 \n");
 			str.append("\t NAME = " + name +"\n");
 			str.append("\t RELIABILITY = " + reliability +"\n");
-			for (Range d  : degradationsList){
-				str.append("\t DEGRADATION = " + d.toString() +"\n");
+			for (Range d  : changesList){
+				str.append("\t CHANGE = " + d.toString() +"\n");
 			}				
 			str.append("}\n");
 			

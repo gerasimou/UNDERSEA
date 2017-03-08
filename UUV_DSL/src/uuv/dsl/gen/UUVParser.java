@@ -1,4 +1,4 @@
-// Generated from UUV.g4 by ANTLR 4.5
+// Generated from grammar/UUV.g4 by ANTLR 4.5
 
   package uuv.dsl.gen;
   import java.util.*; 
@@ -22,26 +22,26 @@ public class UUVParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, ASSIGN=7, SERVER_HOST=8, 
 		SERVER_PORT=9, SIMULATION_TIME=10, TIME_WINDOW=11, SIMULATION_SPEED=12, 
-		SPEED=13, NAME=14, RATE=15, DEGRADATION=16, RELIABILITY=17, SLCOMMENT=18, 
-		ID=19, INT=20, DOUBLE=21, IP=22, OCTET=23, STRING=24, WS=25;
+		SPEED=13, NAME=14, RATE=15, CHANGE=16, RELIABILITY=17, SLCOMMENT=18, ID=19, 
+		INT=20, DOUBLE=21, IP=22, OCTET=23, STRING=24, WS=25;
 	public static final int
 		RULE_model = 0, RULE_simulation = 1, RULE_invocation = 2, RULE_host = 3, 
-		RULE_port = 4, RULE_speed = 5, RULE_uuv = 6, RULE_sensor = 7, RULE_degradation = 8;
+		RULE_port = 4, RULE_speed = 5, RULE_uuv = 6, RULE_sensor = 7, RULE_change = 8;
 	public static final String[] ruleNames = {
 		"model", "simulation", "invocation", "host", "port", "speed", "uuv", "sensor", 
-		"degradation"
+		"change"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "'localhost'", "'UUV'", "'{'", "':'", "'}'", "'SENSOR'", "'='", 
 		"'host'", "'port'", "'simulation time'", "'time window'", "'simulation speed'", 
-		"'speed'", "'name'", "'rate'", "'degradation'", "'reliability'"
+		"'speed'", "'name'", "'rate'", "'change'", "'reliability'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, "ASSIGN", "SERVER_HOST", "SERVER_PORT", 
 		"SIMULATION_TIME", "TIME_WINDOW", "SIMULATION_SPEED", "SPEED", "NAME", 
-		"RATE", "DEGRADATION", "RELIABILITY", "SLCOMMENT", "ID", "INT", "DOUBLE", 
-		"IP", "OCTET", "STRING", "WS"
+		"RATE", "CHANGE", "RELIABILITY", "SLCOMMENT", "ID", "INT", "DOUBLE", "IP", 
+		"OCTET", "STRING", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -671,11 +671,11 @@ public class UUVParser extends Parser {
 		public TerminalNode DOUBLE(int i) {
 			return getToken(UUVParser.DOUBLE, i);
 		}
-		public List<DegradationContext> degradation() {
-			return getRuleContexts(DegradationContext.class);
+		public List<ChangeContext> change() {
+			return getRuleContexts(ChangeContext.class);
 		}
-		public DegradationContext degradation(int i) {
-			return getRuleContext(DegradationContext.class,i);
+		public ChangeContext change(int i) {
+			return getRuleContext(ChangeContext.class,i);
 		}
 		public SensorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -757,7 +757,7 @@ public class UUVParser extends Parser {
 					}
 					}
 					break;
-				case DEGRADATION:
+				case CHANGE:
 					{
 					setState(82); 
 					_errHandler.sync(this);
@@ -768,7 +768,7 @@ public class UUVParser extends Parser {
 							{
 							{
 							setState(81);
-							degradation();
+							change();
 							}
 							}
 							break;
@@ -788,7 +788,7 @@ public class UUVParser extends Parser {
 				setState(88); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NAME) | (1L << RATE) | (1L << DEGRADATION) | (1L << RELIABILITY))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NAME) | (1L << RATE) | (1L << CHANGE) | (1L << RELIABILITY))) != 0) );
 			setState(90);
 			match(T__4);
 			}
@@ -804,11 +804,11 @@ public class UUVParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DegradationContext extends ParserRuleContext {
+	public static class ChangeContext extends ParserRuleContext {
 		public Token begin;
 		public Token end;
 		public Token value;
-		public TerminalNode DEGRADATION() { return getToken(UUVParser.DEGRADATION, 0); }
+		public TerminalNode CHANGE() { return getToken(UUVParser.CHANGE, 0); }
 		public TerminalNode ASSIGN() { return getToken(UUVParser.ASSIGN, 0); }
 		public List<TerminalNode> INT() { return getTokens(UUVParser.INT); }
 		public TerminalNode INT(int i) {
@@ -818,61 +818,61 @@ public class UUVParser extends Parser {
 		public TerminalNode DOUBLE(int i) {
 			return getToken(UUVParser.DOUBLE, i);
 		}
-		public DegradationContext(ParserRuleContext parent, int invokingState) {
+		public ChangeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_degradation; }
+		@Override public int getRuleIndex() { return RULE_change; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof UUVListener ) ((UUVListener)listener).enterDegradation(this);
+			if ( listener instanceof UUVListener ) ((UUVListener)listener).enterChange(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof UUVListener ) ((UUVListener)listener).exitDegradation(this);
+			if ( listener instanceof UUVListener ) ((UUVListener)listener).exitChange(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof UUVVisitor ) return ((UUVVisitor<? extends T>)visitor).visitDegradation(this);
+			if ( visitor instanceof UUVVisitor ) return ((UUVVisitor<? extends T>)visitor).visitChange(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final DegradationContext degradation() throws RecognitionException {
-		DegradationContext _localctx = new DegradationContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_degradation);
+	public final ChangeContext change() throws RecognitionException {
+		ChangeContext _localctx = new ChangeContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_change);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(92);
-			match(DEGRADATION);
+			match(CHANGE);
 			setState(93);
 			match(ASSIGN);
 			setState(94);
-			((DegradationContext)_localctx).begin = _input.LT(1);
+			((ChangeContext)_localctx).begin = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !(_la==INT || _la==DOUBLE) ) {
-				((DegradationContext)_localctx).begin = (Token)_errHandler.recoverInline(this);
+				((ChangeContext)_localctx).begin = (Token)_errHandler.recoverInline(this);
 			} else {
 				consume();
 			}
 			setState(95);
 			match(T__3);
 			setState(96);
-			((DegradationContext)_localctx).end = _input.LT(1);
+			((ChangeContext)_localctx).end = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !(_la==INT || _la==DOUBLE) ) {
-				((DegradationContext)_localctx).end = (Token)_errHandler.recoverInline(this);
+				((ChangeContext)_localctx).end = (Token)_errHandler.recoverInline(this);
 			} else {
 				consume();
 			}
 			setState(97);
 			match(T__3);
 			setState(98);
-			((DegradationContext)_localctx).value = _input.LT(1);
+			((ChangeContext)_localctx).value = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !(_la==INT || _la==DOUBLE) ) {
-				((DegradationContext)_localctx).value = (Token)_errHandler.recoverInline(this);
+				((ChangeContext)_localctx).value = (Token)_errHandler.recoverInline(this);
 			} else {
 				consume();
 			}

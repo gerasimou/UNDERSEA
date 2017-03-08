@@ -1,4 +1,4 @@
-// Generated from UUV.g4 by ANTLR 4.5
+// Generated from grammar/UUV.g4 by ANTLR 4.5
 
   package uuv.dsl.gen;
   import java.util.*; 
@@ -63,9 +63,9 @@ public interface UUVVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSensor(UUVParser.SensorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link UUVParser#degradation}.
+	 * Visit a parse tree produced by {@link UUVParser#change}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDegradation(UUVParser.DegradationContext ctx);
+	T visitChange(UUVParser.ChangeContext ctx);
 }

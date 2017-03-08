@@ -1,4 +1,4 @@
-// Generated from UUV.g4 by ANTLR 4.5
+// Generated from grammar/UUV.g4 by ANTLR 4.5
 
   package uuv.dsl.gen;
   import java.util.*; 
@@ -116,13 +116,13 @@ public class UUVBaseListener implements UUVListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDegradation(UUVParser.DegradationContext ctx) { }
+	@Override public void enterChange(UUVParser.ChangeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDegradation(UUVParser.DegradationContext ctx) { }
+	@Override public void exitChange(UUVParser.ChangeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
