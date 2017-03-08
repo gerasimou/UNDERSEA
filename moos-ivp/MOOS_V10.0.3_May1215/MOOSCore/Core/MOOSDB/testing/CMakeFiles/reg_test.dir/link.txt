@@ -1,1 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -fPIC -fPIC -O3 -DNDEBUG -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/reg_test.dir/RegisterTest.cpp.o  -o /Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/bin/tests/reg_test  ../../../lib/libMOOS.a -lpthread -lm 

@@ -1,5 +1,0 @@
-/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSToolsUI/Tools/Graphical/uPlayBack/CMakeFiles/uPlayback.dir
-/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSToolsUI/Tools/Console/uPoke/CMakeFiles/uPoke.dir
-/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSToolsUI/Tools/Graphical/uMS/CMakeFiles/uMS.dir
-/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSToolsUI/Tools/Console/iRemoteLite/CMakeFiles/iRemoteLite.dir
-/Users/sgerasimou/Documents/MOOS/Exemplar/moos-ivp/MOOS/MOOSToolsUI/Tools/Graphical/Thirdparty/libFLTKVW/CMakeFiles/fltkvw.dir
