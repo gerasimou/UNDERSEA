@@ -77,8 +77,8 @@ bool Sensor::OnStartUp()
 	      else if (param == "APPTICK"){
 	    	  m_nominal_rate = atof(value.c_str());
 	      }
-		  else if(param == "DEGRADATION") { // get degradation details
-			  bool handled = handleDegradation(value);
+		  else if(param == "CHANGE") { // get change details
+			  bool handled = handleChange(value);
 		  }
 		  else if(param == "RELIABILITY") { // get reliability details
 			  m_reliability = atof(value.c_str());
@@ -151,12 +151,12 @@ bool Sensor::Iterate()
 	double successfulReading = ((rand() % 100 + 1)/100.0) < m_reliability ? 1.0 : 0.0;
 
 	double currentTime = MOOSTime(true)-GetAppStartTime();
-	if (event_index < m_degradations.size()){
+	if (event_index < m_changes.size()){
 
-		Degradation deg    = m_degradations.at(event_index);
+		Change deg    = m_changes.at(event_index);
 		if ( (currentTime >= deg.getStartTime()) && (currentTime <= deg.getFinishTime()) ){
 			Notify(m_sensor_name, successfulReading); //doubleToString(currentTime,3) + "\t DOWN");
-			SetAppFreq(deg.getDegradation(),deg.getDegradation());
+			SetAppFreq(deg.getChange(),deg.getChange());
 		}
 		else if (currentTime > deg.getFinishTime()){
 			event_index++;
@@ -185,11 +185,11 @@ bool Sensor::buildReport()
 	m_msgs << "Sensor name:\t" << m_sensor_name <<  endl << endl;
 
 
-	m_msgs << "Degradation List (" << m_degradations.size() << ")" << endl;
+	m_msgs << "Changes List (" << m_changes.size() << ")" << endl;
 	m_msgs << "------------------------------------------------"   << endl;
-	m_msgs << "Start \t\tFinish \t\tDegradation\n"   << endl;
-	for (unsigned i=0; i<m_degradations.size(); i++){
-		m_msgs << m_degradations.at(i).toString() << endl;
+	m_msgs << "Start \t\tFinish \tChange\n"   << endl;
+	for (unsigned i=0; i<m_changes.size(); i++){
+		m_msgs << m_changes.at(i).toString() << endl;
 	}
 
 	return true;
@@ -197,47 +197,47 @@ bool Sensor::buildReport()
 
 
 //---------------------------------------------------------
-// Procedure: handleDegradation
-// check if the provided string is in the format start:end:degradationPercentage
+// Procedure: handleChange
+// check if the provided string is in the format start:end:new rate
 // e.g. 50:100:50
 //---------------------------------------------------------
-bool Sensor::handleDegradation(string value)
+bool Sensor::handleChange(string value)
 {
 	vector<string> v = parseString(removeWhite(value),":");
 
 	//check if the provided string has 3 tokens
 	if (v.empty() || v.size() != 3){
-		reportConfigWarning("Problem with configuring 'DEGRADATTION ="+ value +"': expected 3 variables but received " + intToString(v.size()));
+		reportConfigWarning("Problem with configuring 'CHANGE ="+ value +"': expected 3 variables but received " + intToString(v.size()));
 		return false;
 	}
 
 	//check if all tokens are doubles
 	for (vector<string>::iterator it = v.begin();  it != v.end(); it++){
 		if (!isNumber(*it, false)){
-			reportConfigWarning("Problem with configuring 'DEGRADATTION ="+ value +"': expected double but received " + *it);
+			reportConfigWarning("Problem with configuring 'CHANGE ="+ value +"': expected double but received " + *it);
 			return false;
 		}
 	}
 
 	//check if the ending time is before the starting time
 	if (atof(v.at(0).c_str()) > atof(v.at(1).c_str())){
-		reportConfigWarning("Problem with configuring 'DEGRADATTION ="+ value +"': starting time (" +v.at(0) +") is after ending time (" +v.at(1)+") "
-							"\n Ignored degradation: " + value);
+		reportConfigWarning("Problem with configuring 'CHANGE ="+ value +"': starting time (" +v.at(0) +") is after ending time (" +v.at(1)+") "
+							"\n Ignored change: " + value);
 		return false;
 	}
 
-	//if everything is OK, create a new degradation element and add it to the vector
-	Degradation d =  Degradation( atof(v.at(0).c_str()),
+	//if everything is OK, create a new change element and add it to the vector
+	Change d =  Change( atof(v.at(0).c_str()),
 			  	  	  	  	  	  atof(v.at(1).c_str()),
 								  atof(v.at(2).c_str()));
 
 
-	vector<Degradation>::iterator it = m_degradations.begin();
-	for (;  it != m_degradations.end(); it++){
+	vector<Change>::iterator it = m_changes.begin();
+	for (;  it != m_changes.end(); it++){
 		if ((*it).getStartTime() > d.getFinishTime())
 			break;
 	}
-	m_degradations.insert(it, d);
+	m_changes.insert(it, d);
 
 	return true;
 }

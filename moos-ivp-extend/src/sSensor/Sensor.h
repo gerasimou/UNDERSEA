@@ -10,7 +10,7 @@
 
 #include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h"
 
-#include "Degradation.h"
+#include "Change.h"
 
 class Sensor : public AppCastingMOOSApp
 {
@@ -27,7 +27,7 @@ class Sensor : public AppCastingMOOSApp
 	   void RegisterVariables();
 
 	 private:
-	   bool handleDegradation(std::string value);
+	   bool handleChange(std::string value);
 
 
 
@@ -35,7 +35,7 @@ class Sensor : public AppCastingMOOSApp
 	   double m_nominal_rate; //parameter defined in moos file
 	   std::string m_sensor_name; //sensor name
 	   double m_reliability; //sensor reliability
-	   std::vector<Degradation> m_degradations;
+	   std::vector<Change> m_changes;
 
 
 	 private: // State variables

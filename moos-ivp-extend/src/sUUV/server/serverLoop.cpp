@@ -145,10 +145,10 @@ void *runServer2 (void *m_sensors_map)
 			 error("ERROR client closed the socket ");
 
 		 buffer[strlen(buffer)-1]='\0';
-		 printf("Message: %s\n",buffer);
+//		 printf("Message: %s\n",buffer);
 
 		 string inputStr  = buffer;
-		 string outputStr = "Unknown Command. Doing nothing!";
+		 string outputStr = "Unknown Command. Doing nothing!\n";
 
 		 if (strcmp(buffer, "###") == 0){
 			outputStr = "###\n";

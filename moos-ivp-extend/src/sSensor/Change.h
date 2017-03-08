@@ -6,25 +6,25 @@
 /************************************************************/
 
 
-#ifndef SRC_SSENSOR_DEGRADATION_H_
-#define SRC_SSENSOR_DEGRADATION_H_
+#ifndef SRC_SSENSOR_CHANGE_H_
+#define SRC_SSENSOR_CHANGE_H_
 
 #include <string>
 
-class Degradation {
+class Change {
 	public:
-		Degradation(double start, double finish, double degradation);
-		virtual ~Degradation();
+		Change(double start, double finish, double degradation);
+		virtual ~Change();
 
 		std::string toString();
 		double getStartTime();
 		double getFinishTime();
-		double getDegradation();
+		double getChange();
 
 	private:
 		double m_start; 		//failure starting time
 		double m_finish;		//failure finishing time
-		double m_degradation;	//percentage degradation (based on -sensor- nominal operating rate)
+		double m_change;		//new rate
 };
 
-#endif /* SRC_SSENSOR_DEGRADATION_H_ */
+#endif /* SRC_SSENSOR_CHANGE_H_ */

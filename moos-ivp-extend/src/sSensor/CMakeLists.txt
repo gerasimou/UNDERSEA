@@ -9,7 +9,7 @@ SET(SRC
   Sensor.cpp
   Sensor_Info.cpp
   main.cpp
-  Degradation.cpp
+  Change.cpp
 )
 
 

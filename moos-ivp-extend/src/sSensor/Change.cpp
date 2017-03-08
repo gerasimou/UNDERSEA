@@ -5,45 +5,45 @@
 /*    DATE: 2016                                            */
 /************************************************************/
 
-#include "Degradation.h"
 #include "MBUtils.h"
+#include "Change.h"
 
 using namespace std;
 
-Degradation::Degradation(double start, double finish, double degradation)
+Change::Change(double start, double finish, double degradation)
 {
 	m_start  		= start;
 	m_finish 	  	= finish;
-	m_degradation 	= degradation==0 ? 0.0000001 : degradation ;
+	m_change 	= degradation==0 ? 0.0000001 : degradation ;
 }
 
 
-Degradation::~Degradation()
+Change::~Change()
 {
 }
 
 
-double Degradation::getStartTime()
+double Change::getStartTime()
 {
 	return m_start;
 }
 
 
-double Degradation::getFinishTime()
+double Change::getFinishTime()
 {
 	return m_finish;
 }
 
 
-double Degradation::getDegradation()
+double Change::getChange()
 {
-	return m_degradation;
+	return m_change;
 }
 
 
-string Degradation::toString()
+string Change::toString()
 {
-	string str = doubleToString(m_start,2) +"\t\t"+ doubleToString(m_finish,2) +"\t\t"+ doubleToString(m_degradation,2);
+	string str = doubleToString(m_start,2) +"\t\t"+ doubleToString(m_finish,2) +"\t\t"+ doubleToString(m_change,2);
 	return str;
 }
 
