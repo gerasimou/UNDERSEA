@@ -2,6 +2,8 @@ package controller;
 
 public abstract class Executor {
 
+	protected String command;
+
 	public Executor() {
 	}
 
@@ -14,5 +16,7 @@ public abstract class Executor {
 	/** Get the command: 
 	 *  it should be in the form: SPEED=xx.xx,SENSOR1=x,SENSOR2=x,....
 	 * */
-	public abstract String getCommand();
+	public String getCommand() {
+		return command;
+	}	
 }

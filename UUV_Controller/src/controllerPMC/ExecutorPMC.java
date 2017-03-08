@@ -4,8 +4,6 @@ import controller.Executor;
 import controller.Knowledge;
 
 public class ExecutorPMC extends Executor {
-
-	String command;
 	
 	public ExecutorPMC() {
 	}
@@ -20,11 +18,4 @@ public class ExecutorPMC extends Executor {
 		command = sp +","+ s1 +","+ s2 +","+ s3;
 //		System.out.println(command);
 	}	
-
-	
-	@Override
-	public String getCommand() {
-		return command;
-	}	
-
 }

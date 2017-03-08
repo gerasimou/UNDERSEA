@@ -7,8 +7,6 @@ import controller.Knowledge;
 
 public class ExecutorRandom extends Executor {
 
-	String command;
-	
 	public ExecutorRandom() {
 	}
 
@@ -25,12 +23,5 @@ public class ExecutorRandom extends Executor {
 			if (it.hasNext())
 				command += ",";
 		}
-	}	
-
-	
-	@Override
-	public String getCommand() {
-		return command;
-	}	
-
+	}		
 }
