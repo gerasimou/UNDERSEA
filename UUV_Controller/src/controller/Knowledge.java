@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -104,7 +105,7 @@ public class Knowledge {
 	}
 	
 	
-	public static void logData(){
+	public static void logData() throws IOException{
 		StringBuilder outputStr = new StringBuilder();
 		
 		//make header
@@ -135,7 +136,9 @@ public class Knowledge {
 		}
 		
 		String filename = "log_" + Calendar.getInstance().getTime() +".csv";
-		Utility.exportToFile(filename, outputStr.toString(), false);
+		if (!Utility.fileExists("log", true))
+			Utility.fileCreate("log", true);
+		Utility.exportToFile("log/"+filename, outputStr.toString(), false);
 	}
 	
 	

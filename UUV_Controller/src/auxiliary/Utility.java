@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import main.MainController;
@@ -82,6 +84,28 @@ public class Utility {
 	}	
 
 
+	
+	public static boolean fileExists(String fileName, boolean isDirectory){
+		File file = new File(fileName);
+		if (!file.exists())
+			return false;
+		if (isDirectory && !file.isDirectory())
+			return false;
+		return true;
+	}
+
+	
+	public static void fileCreate(String fileName, boolean isDirectory) throws IOException{
+		File file = new File(fileName);
+		if (!file.exists()){
+			if (isDirectory)
+				Files.createDirectory(Paths.get(fileName));
+			else
+				Files.createFile(Paths.get(fileName));
+		}
+	}
+	
+	
 
 
 }
