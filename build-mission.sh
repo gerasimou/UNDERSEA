@@ -1,30 +1,29 @@
 #!/bin/bash
 
 #get working directory
-INVOCATION_ABS_DIR=`pwd`
+HOME=`pwd`
 
+if [ $# -eq 0 ]; then
+	printf "\nNo mission file provided. Stopping execution!\n\n" $CONFIG_FILE
+	exit 0
+fi
+
+#MISSION_DIR=moos-ivp/missions/uuvExemplar
 MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
 
-CONFIG_FILE=mission.config
+CONFIG_FILE=$1
 
 CONTROLLER_DIR=UUV_Controller
 
-JUST_BUILD="no"
+BUILD_DIR="$HOME/build"
 
 
 #-------------------------------------------------------------------
-#  Part 1: Check for and handle command-line arguments
+#  Part 1: Create build directory if does not exist
 #-------------------------------------------------------------------
-for ARGI; do
-    if [ "${ARGI}" = "--just_build" -o "${ARGI}" = "-j" ]; then
-      JUST_BUILD="yes"
-    else
-  		printf "Bad Argument: %s \n" $ARGI
-  		exit 0
-    fi
-done
-
-
+if [ ! -d "$BUILD_DIR" ]; then
+  mkdir build
+fi
 
 #-------------------------------------------------------
 #  Part 2: Parse configuration file
@@ -33,20 +32,28 @@ done
 # Arg2: Controller's directory
 # Arg3: Missions directory
 
+printf "Gerenating UUV mission given in %s\n" $CONFIG_FILE
+
 java -jar UUV_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
 
 if [[ $? -eq 0 ]]; then
   printf "Error parsing configuration file. Building aborted!\n"
   exit 0
 fi
-cd $INVOCATION_ABS_DIR
 
+if [ ! -d "$BUILD_DIR/resources" ]; then
+  mkdir $BUILD_DIR/resources
+fi
+
+cp $CONTROLLER_DIR/resources/config.properties $BUILD_DIR/resources/
+
+cd $HOME
 
 
 #-------------------------------------------------------
 #  Part 3: Create the .moos and .bhv files.
 #-------------------------------------------------------
-printf "Creating UUV mission and behaviour files\n"
+printf "Creating UUV mission and behaviour files in $BUILD_DIR\n"
 
 #go to missions directory
 cd $MISSION_DIR
@@ -54,26 +61,14 @@ cd $MISSION_DIR
 #create mission
 nsplug meta_vehicle.moos targ_uuv.moos
 
-cd $INVOCATION_ABS_DIR
+#create behaviour
+nsplug meta_vehicle.bhv targ_uuv.bhv
 
 
+sleep 1
+cp targ_uuv.moos $BUILD_DIR/targ_uuv.moos
+cp targ_uuv.bhv $BUILD_DIR/targ_uuv.bhv
 
-#-------------------------------------------------------
-#  Part 4: Compile the controller
-#-------------------------------------------------------
-printf "\nCreating UUV controller\n"
+cd $HOME
 
-#go to initial directory & then to controller's directory
-cd $CONTROLLER_DIR
-
-mvn package
-
-if [ -d "resources" ]; then
-  cp -r resources target/
-fi
-
-# ls -l
-
-printf "\nUUV controller created successfully\n"
-
-cd $INVOCATION_ABS_DIR
+printf "\nUUV mission and behaviour files created successfully in $BUILD_DIR\n"

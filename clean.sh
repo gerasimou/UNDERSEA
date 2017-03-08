@@ -1,7 +1,11 @@
 #!/bin/bash
 
 #get working directory
-INVOCATION_ABS_DIR=`pwd`
+HOME=`pwd`
+
+BUILD_DIR="$HOME/build"
+
+MISSION_DIR="$HOME/moos-ivp-extend/missions/uuvExemplar"
 
 
 VERBOSE=""
@@ -55,13 +59,18 @@ if [ ${KILLALL} = "yes" ]; then
 fi
 
 if [ ${REMOVE} = "yes" ]; then
-	printf "Cleaning mission files\n"
-	cd moos-ivp-extend/missions/uuvExemplar
-
+	printf "Cleaning mission files in $BUILD_DIR\n"
+	#cd moos-ivp/missions/uuvExemplar
+	cd $MISSION_DIR
+	
 	rm -f    .LastOpenedMOOSLogDirectory
 	rm -rf  $VERBOSE MOOSLog_*  LOG_*
 	rm -rf  $VERBOSE *~ targ_* *.moos++ log *SENSOR*.moos *UUV*.moos
 	rm -f logfile/*
 
-	cd $INVOCATION_ABS_DIR
+	cd $HOME
+
+	if [ "$(ls -A $BUILD_DIR/)" ]; then
+		rm -r $BUILD_DIR/*
+	fi
 fi

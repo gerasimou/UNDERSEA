@@ -1,18 +1,21 @@
 #!/bin/bash
 
 #get working directory
-INVOCATION_ABS_DIR=`pwd`
+HOME=`pwd`
 
-MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
+BUILD_DIR="$HOME/build"
 
-CONTROLLER_DIR=UUV_Controller
+CONTROLLER="UUV_Controller.jar"
+MOOS="targ_uuv.moos"
+BHV="targ_uuv.bhv"
+PROPERTIES="resources/config.properties"
 
-BUILD="no"
-
+export LD_LIBRARY_PATH=$BUILD_DIR/repo/prism
 
 #-------------------------------------------------------------------
 #  Part 1: Check for and handle command-line arguments
 #-------------------------------------------------------------------
+#TODO
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
     	printf "%s [SWITCHES]                       \n" $0
@@ -41,39 +44,76 @@ for ARGI; do
 done
 
 
-
 #-------------------------------------------------------
-#  Part 2: Create the .moos and .bhv files.
+#  Part 2: Check if all necessary components exist
 #-------------------------------------------------------
-if [ ${BUILD} = "yes" ]; then
-	printf "Building UUV and controller\n"
-  ./build.sh
+if [ ! -d "$BUILD_DIR" ]; then
+  printf "\nERROR: build directory does not exist\n"
+  printf "\tRun ./build-mission.sh & ./build-controller.sh and try again.\n\n"
+  exit 0
 fi
+
+cd $BUILD_DIR
+
+ERROR=0
+
+if [ ! -e "$CONTROLLER" ]; then
+  printf "\nERROR: %s does not exist in build directory\n" $CONTROLLER
+  ERROR="1"
+fi
+if [ ! -e "$MOOS" ]; then
+  printf "\nERROR: File %s does not exist in build directory\n" $MOOS
+  ERROR="1"
+fi
+if [ ! -e "$BHV" ]; then
+  printf "\nERROR: File %s does not exist in build directory\n" $BHV
+  ERROR="1"
+fi
+if [ ! -e "$PROPERTIES" ]; then
+  printf "\nERROR: Properties %s does not exist\n" $PROPERTIES
+  ERROR="1"
+fi
+
+if [ "$ERROR" -eq "1" ]; then
+  printf "\nLaunching UUV aborted! Fix the errors and try again.\n"
+  printf "\tRun ./build-mission.sh & ./build-controller.sh and try again.\n\n"
+  exit 0
+fi
+
+
 
 
 #-------------------------------------------------------
 #  Part 3: Launch the shoreside, the UUV & its controller
 #-------------------------------------------------------
 #go to missions directory
-cd $MISSION_DIR
+cd $BUILD_DIR
 
 #start uuv simulator
+printf "\nLaunching the mission!\n"
 pAntler targ_uuv.moos >& /dev/null &
 
 sleep 3
 
-#go to initial directory & then to controller's directory
-cd $INVOCATION_ABS_DIR/$CONTROLLER_DIR
-
-#/bin/bash .$INVOCATION_ABS_DIR/memoryMonitor.sh &
 
 #start controller
-(time java -jar target/UUV_Controller-jar-with-dependencies.jar) 2> CPU.txt
+
+(time java -jar UUV_Controller.jar) 2> CPU.txt
 EXIT_VALUE=$?
 
-mv CPU.txt "CPU_`data`.txt"
+if [ ! -d "log" ]; then
+  mkdir log
+fi
+
+CPU_FILE=CPU_`date`.txt
+mv CPU.txt "$CPU_FILE"
+mv "$CPU_FILE" log/
 
 if [[ $EXIT_VALUE -eq 1 ]]; then
-  cd $INVOCATION_ABS_DIR
+  cd $HOME
   ./clean.sh -k
 fi
+
+printf "\nLog data is build/log\n"
+
+
