@@ -3,9 +3,9 @@
   
   	<!--  Project specific -->
   	<groupId>org</groupId>
-  	<artifactId>UUV_Controller</artifactId>
+  	<artifactId>UNDERSEA_Controller</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
-  	<name>UUV_Controller</name>
+  	<name>UNDERSEA_Controller</name>
   	<packaging>jar</packaging>
   	<url>http://maven.apache.org</url>
 
@@ -41,7 +41,7 @@
   	
  	<!-- Build  -->  
 	<build>
-  		<finalName>UUV_Controller</finalName>
+  		<finalName>UNDERSEA_Controller</finalName>
 
 		
   		<plugins>

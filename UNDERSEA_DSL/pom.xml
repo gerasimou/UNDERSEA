@@ -3,9 +3,9 @@
   
   	<!--  Project specific -->
   	<groupId>org</groupId>
-  	<artifactId>UUV_DSL</artifactId>
+  	<artifactId>UNDERSEA_DSL</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
-  	<name>UUV_DSL</name>
+  	<name>UNDERSEA_DSL</name>
   	<packaging>jar</packaging>
   	<url>http://maven.apache.org</url>
 
@@ -40,7 +40,7 @@
   	
  	<!-- Build  -->  
 	<build>
-  		<finalName>UUV_DSL</finalName>
+  		<finalName>UNDERSEA_DSL</finalName>
 
 		
   		<plugins>

@@ -5,7 +5,7 @@ HOME=`pwd`
 
 CONFIG_FILE=mission.config
 
-CONTROLLER_DIR=UUV_Controller
+CONTROLLER_DIR=UNDERSEA_Controller
 
 BUILD_DIR="$HOME/build"
 
@@ -28,10 +28,10 @@ cd $CONTROLLER_DIR
 
 mvn package
 
-JAR="target/UUV_Controller-jar-with-dependencies.jar"
+JAR="target/UNDERSEA_Controller-jar-with-dependencies.jar"
 
 if [ -e "$JAR" ]; then
-  cp $JAR $BUILD_DIR/UUV_Controller.jar
+  cp $JAR $BUILD_DIR/UNDERSEA_Controller.jar
 fi
 
 

@@ -3,7 +3,7 @@
 #get working directory
 HOME=`pwd`
 
-DSL_DIR=UUV_DSL
+DSL_DIR=UNDERSEA_DSL
 
 BUILD_DIR="$HOME/build"
 
@@ -27,10 +27,10 @@ cd $DSL_DIR
 
 mvn package
 
-JAR="target/UUV_DSL-jar-with-dependencies.jar"
+JAR="target/UNDERSEA_DSL-jar-with-dependencies.jar"
 
 if [ -e "$JAR" ]; then
-  cp $JAR $HOME/UUV_DSL.jar
+  cp $JAR $HOME/UNDERSEA_DSL.jar
 fi
 
 cd $HOME

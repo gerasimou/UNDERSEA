@@ -5,7 +5,7 @@ HOME=`pwd`
 
 BUILD_DIR="$HOME/build"
 
-CONTROLLER="UUV_Controller.jar"
+CONTROLLER="UNDERSEA_Controller.jar"
 MOOS="targ_uuv.moos"
 BHV="targ_uuv.bhv"
 PROPERTIES="resources/config.properties"
@@ -98,7 +98,7 @@ sleep 3
 
 #start controller
 
-(time java -jar UUV_Controller.jar) 2> CPU.txt
+(time java -jar UNDERSEA_Controller.jar) 2> CPU.txt
 EXIT_VALUE=$?
 
 if [ ! -d "log" ]; then

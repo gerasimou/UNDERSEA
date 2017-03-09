@@ -13,7 +13,7 @@ MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
 
 CONFIG_FILE=$1
 
-CONTROLLER_DIR=UUV_Controller
+CONTROLLER_DIR=UNDERSEA_Controller
 
 BUILD_DIR="$HOME/build"
 
@@ -34,7 +34,7 @@ fi
 
 printf "Gerenating UUV mission given in %s\n" $CONFIG_FILE
 
-java -jar UUV_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
+java -jar UNDERSEA_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
 
 if [[ $? -eq 0 ]]; then
   printf "Error parsing configuration file. Building aborted!\n"
