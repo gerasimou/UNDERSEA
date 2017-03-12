@@ -51,8 +51,8 @@ if [ ! -d "$BUILD_DIR/models" ]; then
   cp -r models $BUILD_DIR/
 fi
 
-if [ ! -d "$BUILD_DIR/repo" ]; then
-  cp -r repo $BUILD_DIR/
-fi
+#if [ ! -d "$BUILD_DIR/repo" ]; then
+cp -r repo $BUILD_DIR/
+#fi
 
 cd $HOME

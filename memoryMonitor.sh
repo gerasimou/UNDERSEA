@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTROLLER=UUV_Controller
+CONTROLLER=UNDERSEA_Controller
 
 sleep 2
 
