@@ -35,6 +35,28 @@
 			<version>4.2.1</version>
 			<type>jar</type>
 		</dependency> 
+
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>21.0</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-math3</artifactId>
+		    <version>3.2</version>
+		</dependency>		
+		
+<!-- 		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.10</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/repo/libsCT/junit-4.10.jar</systemPath>
+		</dependency>
+ -->
 		  
   	</dependencies>
   	
