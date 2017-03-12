@@ -47,7 +47,7 @@ public class ControllerEngine {
 				System.exit(0);
 			}
 			
-			Knowledge.logData();
+			Knowledge.getInstance().logData();
 			System.exit(1);
 		}
 		catch (Exception e) {

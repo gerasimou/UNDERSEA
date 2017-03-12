@@ -16,10 +16,10 @@ public class PlannerRandom extends Planner {
 
 	@Override
 	public void run () {
-		Knowledge.setUUVspeed(rand.nextDouble() + rand.nextInt(4));
+		Knowledge.getInstance().setUUVspeed(rand.nextDouble() + rand.nextInt(4));
 		
-		for (UUVSensor uuvSensor : Knowledge.sensorsMap.values()){
-			Knowledge.setSensorState(uuvSensor.getName(), rand.nextInt(2)-1);
+		for (UUVSensor uuvSensor : Knowledge.getInstance().sensorsMap.values()){
+			Knowledge.getInstance().setSensorState(uuvSensor.getName(), rand.nextInt(2)-1);
 		}
 	}	
 

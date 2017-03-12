@@ -62,7 +62,7 @@ public class AnalyserPMC extends Analyser {
      */
 	public void  run(){
 		System.out.println("Running analyser");
-		Knowledge.PMCResultsMap.clear();		
+		Knowledge.getInstance().PMCResultsMap.clear();		
 		
 		//For all configurations run QV and populate RQVResultArray
 		for (int CSC=1; CSC<NUM_OF_SENSOR_CONFIGS; CSC++){
@@ -71,9 +71,9 @@ public class AnalyserPMC extends Analyser {
 				int index 	= ((CSC-1)*21)+(sp-20);
 
 				Object[] arguments = new Object[9]; 
-				arguments[0]	= Knowledge.getSensorRate("SENSOR1");
-				arguments[1]	= Knowledge.getSensorRate("SENSOR2");
-				arguments[2]	= Knowledge.getSensorRate("SENSOR3");
+				arguments[0]	= Knowledge.getInstance().getSensorRate("SENSOR1");
+				arguments[1]	= Knowledge.getInstance().getSensorRate("SENSOR2");
+				arguments[2]	= Knowledge.getInstance().getSensorRate("SENSOR3");
 				arguments[3]	= estimateP(sp/10.0, 5);
 				arguments[4]	= estimateP(sp/10.0, 7);
 				arguments[5]	= estimateP(sp/10.0, 11);
@@ -95,7 +95,7 @@ public class AnalyserPMC extends Analyser {
 				double cost					= 1 * req2result + 20/(sp/10);
 				
 				//4) store configuration results
-				Knowledge.addResult(index, new PMCResult(CSC, sp/10.0, req1result, req2result, cost));
+				Knowledge.getInstance().addResult(index, new PMCResult(CSC, sp/10.0, req1result, req2result, cost));
 			}
 		}		
 		

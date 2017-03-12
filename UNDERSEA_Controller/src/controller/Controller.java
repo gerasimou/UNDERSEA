@@ -73,7 +73,7 @@ public class Controller extends TimerTask{
 	 */
 	public void run(){
 		double initTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED;
-		Knowledge.addToInitTimeList(initTime);
+		Knowledge.getInstance().addToInitTimeList(initTime);
 		System.out.println(initTime +"\tRequested UUV state");
 		
 		sensor.run();
@@ -96,7 +96,7 @@ public class Controller extends TimerTask{
 		
 		double endTime = (System.currentTimeMillis() - start)/1000.0*SIMULATION_SPEED ;
 		System.out.println(endTime +"\tApplied?\t"+ effector.getReply() +"\n");
-		Knowledge.addToEndTimeList(endTime);
+		Knowledge.getInstance().addToEndTimeList(endTime);
 	}
 	
 	

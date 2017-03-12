@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,46 +12,54 @@ import controller.uuv.UUVSensor;
 import controllerPMC.prism.PMCResult;
 
 public class Knowledge {
-
-	private Knowledge() {}
+	private static Knowledge knowledge = null;	
+	
+	private Knowledge() {
+	}
 
 	/** UUV*/
-	public static UUV uuv = new UUV("name");
+	public UUV uuv = new UUV("name");
 
 	/** Sensors*/
-	public static Map<String, UUVSensor> sensorsMap = new HashMap<String, UUVSensor>();
+	public Map<String, UUVSensor> sensorsMap = new HashMap<String, UUVSensor>();
 	
     /** Structure that keeps the result after PMC */
-    public static Map<Integer,PMCResult> PMCResultsMap = new HashMap<Integer, PMCResult>();    
+    public Map<Integer,PMCResult> PMCResultsMap = new HashMap<Integer, PMCResult>();    
 
     /** Keeps the times when the controller started executing the MAPE loop (i.e, after every "time_window" seconds)*/
-    public static List<Double> initTimeList = new ArrayList<Double>();    
+    public List<Double> initTimeList = new ArrayList<Double>();    
 
     /** Keeps the times when the controller completed the execution of its MAPE loop*/
-    public static List<Double> endTimeList = new ArrayList<Double>();    
+    public List<Double> endTimeList = new ArrayList<Double>();    
 
-    
 	/** flag showning whether analysis is required*/
-	public static boolean analysisRequired = false;
+	public boolean analysisRequired = false;
 
-	public static void setUUVspeed (double s){
-		uuv.setSpeed(s);
+	
+	public static Knowledge getInstance(){
+		if (knowledge == null)
+			knowledge = new Knowledge();
+		return knowledge;
 	}
 	
 	
-	public static double getUUVspeed (){
+	public void setUUVspeed (double s){
+		uuv.setSpeed(s);
+	}	
+	
+	public double getUUVspeed (){
 		return uuv.getSpeed();
 	}
 	
 	
-	public static void setSensorRate (String sensorName, double rate){
+	public void setSensorRate (String sensorName, double rate){
 		if (!sensorsMap.containsKey(sensorName))
 			sensorsMap.put(sensorName, new UUVSensor(sensorName, rate));
 		sensorsMap.get(sensorName).setRate(rate);
 	}
 	
 	
-	public static double getSensorRate (String sensorName){
+	public double getSensorRate (String sensorName){
 		try{
 			return sensorsMap.get(sensorName).getCurrentRate();
 		} catch (NullPointerException e){
@@ -61,12 +68,12 @@ public class Knowledge {
 	}
 	
 	
-	public static void setSensorState (String sensorName, int state){
+	public void setSensorState (String sensorName, int state){
 		sensorsMap.get(sensorName).setState(state);
 	}
 
 	
-	public static double getSensorState (String sensorName){
+	public double getSensorState (String sensorName){
 		try{
 			return sensorsMap.get(sensorName).getCurrentState();
 		} catch (NullPointerException e){
@@ -75,26 +82,26 @@ public class Knowledge {
 	}
 	
 	
-	public static void setSensorReadings (String sensorName, int readings){
+	public void setSensorReadings (String sensorName, int readings){
 		sensorsMap.get(sensorName).setReadings(readings);
 	}
 
 	
-	public static void setSensorAccurateReadings (String sensorName, int accurateReadings){
+	public void setSensorAccurateReadings (String sensorName, int accurateReadings){
 		sensorsMap.get(sensorName).setAccurateReadings(accurateReadings); 
 	}
 	
 	
-	public static void addToInitTimeList (double time){
+	public void addToInitTimeList (double time){
 		initTimeList.add(time);
 	}
 
-	public static void addToEndTimeList (double time){
+	public void addToEndTimeList (double time){
 		endTimeList.add(time);
 	}
 
 	
-	public static boolean systemStateChanged(){
+	public boolean systemStateChanged(){
 		if (!uuv.speedSame())
 			return true;
 		for (UUVSensor uuvSensor : sensorsMap.values()){
@@ -105,7 +112,7 @@ public class Knowledge {
 	}
 	
 	
-	public static void logData() throws IOException{
+	public void logData(){
 		StringBuilder outputStr = new StringBuilder();
 		
 		//make header
@@ -136,14 +143,12 @@ public class Knowledge {
 		}
 		
 		String filename = "log_" + Calendar.getInstance().getTime() +".csv";
-		if (!Utility.fileExists("log", true))
-			Utility.fileCreate("log", true);
-		Utility.exportToFile("log/"+filename, outputStr.toString(), false);
+		Utility.exportToFile(filename, outputStr.toString(), false);
 	}
 	
 	
 	
-	public static void addResult (int index, PMCResult result){
+	public void addResult (int index, PMCResult result){
 		PMCResultsMap.put(index, result);
 	}
 

@@ -52,9 +52,9 @@ public class Sensor {
 			if (rate == 0)
 				rate =0.2;
 				
-			Knowledge.setSensorRate(sensorData[0], rate);
-			Knowledge.setSensorReadings(sensorData[0], Integer.parseInt(sensorData[2]));
-			Knowledge.setSensorAccurateReadings(sensorData[0], Integer.parseInt(sensorData[3]));
+			Knowledge.getInstance().setSensorRate(sensorData[0], rate);
+			Knowledge.getInstance().setSensorReadings(sensorData[0], Integer.parseInt(sensorData[2]));
+			Knowledge.getInstance().setSensorAccurateReadings(sensorData[0], Integer.parseInt(sensorData[3]));
 			
 		}
 	}

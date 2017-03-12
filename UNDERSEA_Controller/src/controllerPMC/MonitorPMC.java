@@ -10,8 +10,8 @@ public class MonitorPMC extends Monitor {
 
 	@Override
 	public void run() {
-		boolean analysisRequired = Knowledge.systemStateChanged();
-		Knowledge.analysisRequired  = analysisRequired;
+		boolean analysisRequired = Knowledge.getInstance().systemStateChanged();
+		Knowledge.getInstance().analysisRequired  = analysisRequired;
 	}	
 
 }

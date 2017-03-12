@@ -13,12 +13,12 @@ public class ExecutorRandom extends Executor {
 	
 	@Override
 	public void run () {
-		command = "SPEED="   + (Knowledge.getUUVspeed()) +",";
+		command = "SPEED="   + (Knowledge.getInstance().getUUVspeed()) +",";
 		
-		Iterator<String> it = Knowledge.sensorsMap.keySet().iterator();
+		Iterator<String> it = Knowledge.getInstance().sensorsMap.keySet().iterator();
 		while (it.hasNext()){
 			String sensorName = it.next();
-			command += sensorName +"="+ (Knowledge.getSensorState(sensorName));
+			command += sensorName +"="+ (Knowledge.getInstance().getSensorState(sensorName));
 			
 			if (it.hasNext())
 				command += ",";
