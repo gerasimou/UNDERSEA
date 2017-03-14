@@ -61,7 +61,6 @@ public class AnalyserPMC extends Analyser {
      * @param parameters
      */
 	public void  run(){
-		System.out.println("Running analyser");
 		Knowledge.getInstance().PMCResultsMap.clear();		
 		
 		//For all configurations run QV and populate RQVResultArray

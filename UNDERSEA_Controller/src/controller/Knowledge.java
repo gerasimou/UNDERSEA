@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -142,8 +144,15 @@ public class Knowledge {
 			outputStr.append(uuv.getSpeedList().get(i) + "\n");
 		}
 		
-		String filename = "log_" + Calendar.getInstance().getTime() +".csv";
-		Utility.exportToFile(filename, outputStr.toString(), false);
+
+		try {
+			Utility.fileCreate("log", true);
+			String filename = "log" + File.separator + "log_" + Calendar.getInstance().getTime() +".csv";
+			Utility.exportToFile(filename, outputStr.toString(), false);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	
