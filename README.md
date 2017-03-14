@@ -31,3 +31,9 @@ Also, the repository comprises the following shell scripts:
 
 * **memoryMonitor.sh**: Script for launching visualvm and connecting the UNDERSEA_Controller process with the memory monitoring tool)
 <br /> Run ```./memoryMonitor.sh```
+
+
+--
+
+
+Should you have any comments, suggestions or questions, or to report a bug, please email simos.gerasimou-at-york.ac.uk
