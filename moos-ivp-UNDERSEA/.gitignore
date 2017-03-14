@@ -1,6 +1,5 @@
 bin/
-plug_SENSOR*
-plug_UUV*
-targ_*
-meta_vehicle*
-*pHelm*
+**plug_SENSOR*
+**plug_UUV*
+*targ_*
+**plug_pHelmIvP*

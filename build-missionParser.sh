@@ -27,10 +27,10 @@ cd $DSL_DIR
 
 mvn package
 
-JAR="target/UNDERSEA_DSL-jar-with-dependencies.jar"
+JAR="target/UNDERSEA_DSL.jar"
 
 if [ -e "$JAR" ]; then
-  cp $JAR $HOME/UNDERSEA_DSL.jar
+  cp $JAR $HOME/
 fi
 
 cd $HOME

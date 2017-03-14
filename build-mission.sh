@@ -9,7 +9,7 @@ if [ $# -eq 0 ]; then
 fi
 
 #MISSION_DIR=moos-ivp/missions/uuvExemplar
-MISSION_DIR=moos-ivp-extend/missions/uuvExemplar
+MISSION_DIR=moos-ivp-UNDERSEA/missions/uuvExemplar
 
 CONFIG_FILE=$1
 
