@@ -5,10 +5,10 @@ import controller.Controller;
 import controller.Executor;
 import controller.Monitor;
 import controller.Planner;
-import controllerCT.AnalyserCT;
-import controllerCT.ExecutorCT;
-import controllerCT.MonitorCT;
-import controllerCT.PlannerCT;
+import controllerPMC.AnalyserPMC;
+import controllerPMC.ExecutorPMC;
+import controllerPMC.MonitorPMC;
+import controllerPMC.PlannerPMC;
 
 public class MainController {
 
@@ -29,16 +29,16 @@ public class MainController {
 
 
 		//PMC-based controller
-//	    Monitor monitor  	= new MonitorPMC();
-//	    Analyser analyser	= new AnalyserPMC();
-//	    Planner planner		= new PlannerPMC();
-//	    Executor executor	= new ExecutorPMC();
+	    Monitor monitor  	= new MonitorPMC();
+	    Analyser analyser	= new AnalyserPMC();
+	    Planner planner		= new PlannerPMC();
+	    Executor executor	= new ExecutorPMC();
 		
 		//CT-based controller
-	    Monitor monitor  	= new MonitorCT();
-	    Analyser analyser	= new AnalyserCT();
-	    Planner planner		= new PlannerCT();
-	    Executor executor	= new ExecutorCT();
+//	    Monitor monitor  	= new MonitorCT();
+//	    Analyser analyser	= new AnalyserCT();
+//	    Planner planner		= new PlannerCT();
+//	    Executor executor	= new ExecutorCT();
 		
 		//create new controller
 		Controller controller = new Controller(monitor, analyser, planner, executor);

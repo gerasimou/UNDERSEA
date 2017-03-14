@@ -28,10 +28,10 @@ cd $CONTROLLER_DIR
 
 mvn package
 
-JAR="target/UNDERSEA_Controller-jar-with-dependencies.jar"
+JAR="target/UNDERSEA_Controller.jar"
 
 if [ -e "$JAR" ]; then
-  cp $JAR $BUILD_DIR/UNDERSEA_Controller.jar
+  cp $JAR $BUILD_DIR/
 fi
 
 
