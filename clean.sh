@@ -5,7 +5,7 @@ HOME=`pwd`
 
 BUILD_DIR="$HOME/build"
 
-MISSION_DIR="$HOME/moos-ivp-extend/missions/uuvExemplar"
+MISSION_DIR="$HOME/moos-ivp-UNDERSEA/missions/uuvExemplar"
 
 
 VERBOSE=""
