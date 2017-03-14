@@ -6,4 +6,5 @@ target/
 moos-ivp
 Library
 moos-ivp-extend
-build.sh
+.project
+.cproject
