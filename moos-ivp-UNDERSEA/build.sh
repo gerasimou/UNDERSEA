@@ -35,6 +35,10 @@ done
 #  Part 2: Invoke the call to make in the build directory
 #-------------------------------------------------------------------
 
+if [ ! -d build ]; then
+  mkdir build
+fi
+
 cd build
 
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ../
