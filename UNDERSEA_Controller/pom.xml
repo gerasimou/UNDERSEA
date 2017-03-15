@@ -64,6 +64,7 @@
  	<!-- Build  -->  
 	<build>
   		<finalName>UNDERSEA_Controller</finalName>
+  		<sourceDirectory>src</sourceDirectory>
 
 		
   		<plugins>

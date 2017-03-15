@@ -26,7 +26,7 @@ printf "\nCreating UUV controller in $BUILD_DIR\n"
 #go to initial directory & then to controller's directory
 cd $CONTROLLER_DIR
 
-mvn package
+mvn clean package
 
 JAR="target/UNDERSEA_Controller.jar"
 

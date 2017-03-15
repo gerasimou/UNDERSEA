@@ -25,7 +25,7 @@ printf "\nCreating mission parser\n"
 #go to initial directory & then to controller's directory
 cd $DSL_DIR
 
-mvn package
+mvn clean package
 
 JAR="target/UNDERSEA_DSL.jar"
 

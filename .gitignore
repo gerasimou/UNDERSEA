@@ -9,3 +9,4 @@ moos-ivp-extend
 .project
 .cproject
 output_Prism.txt
+dependency-reduced-pom.xml
