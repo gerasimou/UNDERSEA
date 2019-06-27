@@ -34,7 +34,7 @@ fi
 
 printf "Gerenating UUV mission given in %s\n" $CONFIG_FILE
 
-java -jar UNDERSEA_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
+java -jar build/UNDERSEA_DSL.jar $CONFIG_FILE $CONTROLLER_DIR $MISSION_DIR
 
 if [[ $? -eq 0 ]]; then
   printf "Error parsing configuration file. Building aborted!\n"
