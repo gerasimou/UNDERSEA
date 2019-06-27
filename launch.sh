@@ -13,7 +13,7 @@ PROPERTIES="resources/config.properties"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   export LD_LIBRARY_PATH=$BUILD_DIR/repo/prism/linux/
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-	export LD_LIBRARY_PATH=$BUILD_DIR/repo/prism/osx/
+	export DYLD_LIBRARY_PATH=$BUILD_DIR/repo/prism/osx/
 else 
 	printf "%s prism files not implemented yet..." $OSTYPE
 	exit 0
