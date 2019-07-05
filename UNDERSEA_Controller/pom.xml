@@ -31,7 +31,7 @@
 		<!--  PRISM model checker -->
 		<dependency>
 			<groupId>org.modelChecker.prism</groupId>
-			<artifactId>prism</artifactId>
+			<artifactId>PRISM</artifactId>
 			<version>4.2.1</version>
 			<type>jar</type>
 		</dependency> 

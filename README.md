@@ -17,6 +17,9 @@ Also, the repository comprises the following shell scripts:
 * **build-controller.sh**: Script for building UNDERSEA_Controller.jar.
 <br /> Run ```./build-controller.sh```
 
+* **build-dsl.sh**: Script for building UNDERSEA_DSL.jar.
+<br /> Run ```./build-dsl.sh```
+
 * **build-mission.sh**: Script for building the necessary mission files.
 <br /> Run ```./build-mission.sh missionPath```
 

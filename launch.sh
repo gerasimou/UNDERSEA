@@ -10,7 +10,14 @@ MOOS="targ_uuv.moos"
 BHV="targ_uuv.bhv"
 PROPERTIES="resources/config.properties"
 
-export LD_LIBRARY_PATH=$BUILD_DIR/repo/prism
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  export LD_LIBRARY_PATH=$BUILD_DIR/repo/prism/linux/
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	export DYLD_LIBRARY_PATH=$BUILD_DIR/repo/prism/osx/
+else 
+	printf "%s prism files not implemented yet..." $OSTYPE
+	exit 0
+fi
 
 #-------------------------------------------------------------------
 #  Part 1: Check for and handle command-line arguments

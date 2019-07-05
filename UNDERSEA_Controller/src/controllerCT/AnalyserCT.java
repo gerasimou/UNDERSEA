@@ -41,7 +41,8 @@ public class AnalyserCT extends Analyser {
 			simca.initGoals();		
 
 			sensors =  new ArrayList<Sensor>(5);
-			sensors = Knowledge.getInstance().getSensors();
+//			sensors = Knowledge.getInstance().getSensors();
+
 			for (int i =0; i<sensorNum;i++)
 			{
 				String sensName = "SENSOR" + Integer.toString(i+1);
@@ -51,11 +52,13 @@ public class AnalyserCT extends Analyser {
 				simca.setSensorProperty(1,sensors.get(i).ID,rate/sensors.get(i).accuracy);
 				simca.setSensorOptimProperty(0, sensors.get(i).ID,sensors.get(i).energry);
 			}
+
 			simca.init();
 			simca.setGoal(1, 7);//setting system goals: throughput (R1)
 			simca.setGoal(0, 12);//setting system goals: energy cons (R2)			
 			simca.setPole(0, 0.9);
 			simca.setPole(1, 0.9);
+
 		}
 
 		//emulating system operation, 10000 invocations
